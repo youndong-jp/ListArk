@@ -1,5 +1,9 @@
 package com.example.ListArk.service;
 
+import java.util.List;
+
+import com.example.ListArk.Dto.SiblingCharacterDto;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -31,7 +35,14 @@ public class ApiClientService {
                 .header("authorization", "bearer " + apiKey)
                 .retrieve()
                 .bodyToMono(String.class);
+    }public Mono<List<SiblingCharacterDto>> getCharacterSiblings(String name) {
+        return webClient.get()
+                .uri("/characters/" + name + "/siblings")
+                .header(HttpHeaders.ACCEPT, "application/json")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
+                .retrieve()
+                .bodyToFlux(SiblingCharacterDto.class)
+                .collectList();
     }
 
-
-    }
+}
