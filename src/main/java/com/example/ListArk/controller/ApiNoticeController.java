@@ -1,10 +1,14 @@
 package com.example.ListArk.controller;
 
+import com.example.ListArk.Dto.notice.NoticeDto;
+import com.example.ListArk.common.ApiResponse;
 import com.example.ListArk.service.ApiClientService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class ApiNoticeController {
 
     private final ApiClientService apiClientService;
@@ -13,14 +17,17 @@ public class ApiNoticeController {
         this.apiClientService = apiClientService;
     }
 
-    @GetMapping("/api/notices")
-    public String getNotices() {
-        System.out.println(">>> LostArk 공지사항 호출 시작");
-
-        String response = apiClientService.getNotices().block();
-
-        System.out.println(">>> LostArk API 응답: " + response);
-
-        return response;
+    @GetMapping("/notices")
+    public ApiResponse<List<NoticeDto>> getNotices() {
+        List<NoticeDto> notices = apiClientService.getNotices().block();
+        return ApiResponse.ok(notices);
     }
+    @GetMapping("/notices/filter")
+    public ApiResponse<List<NoticeDto>> getFilteredNotices(
+            @RequestParam(required = false) String type
+    ) {
+        List<NoticeDto> result = apiClientService.getFilteredNotices(type).block();
+        return ApiResponse.ok(result);
+    }
+
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.ListArk.Dto.armory.ArmoryGemDto;
 import com.example.ListArk.Dto.character.CharacterProfileDto;
 import com.example.ListArk.Dto.SiblingCharacterDto;
+import com.example.ListArk.Dto.notice.NoticeDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -22,14 +23,23 @@ public class ApiClientService {
     }
 
 
-    public Mono<String> getNotices() {
+    public Mono<List<NoticeDto>> getNotices() {
         return webClient.get()
                 .uri("/news/notices")
                 .header("accept", "application/json")
                 .header("authorization", "bearer " + apiKey)  // ← 수정됨!
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToFlux(NoticeDto.class)
+                .collectList();
     }
+    public Mono<List<NoticeDto>> getFilteredNotices(String type) {
+        return getNotices()
+                .map(list -> list.stream()
+                        .filter(n -> type == null || n.getType().equals(type))
+                        .sorted((a, b) -> b.getDate().compareTo(a.getDate())) // 최신순 정렬
+                        .toList());
+    }
+
     public Mono<List<SiblingCharacterDto>> getCharacterSiblings(String name) {
         return webClient.get()
                 .uri("/characters/" + name + "/siblings")
