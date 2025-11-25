@@ -2,6 +2,7 @@ package com.example.ListArk.service;
 
 import java.util.List;
 
+import com.example.ListArk.Dto.armory.ArmoryGemDto;
 import com.example.ListArk.Dto.character.CharacterProfileDto;
 import com.example.ListArk.Dto.SiblingCharacterDto;
 import org.springframework.http.HttpHeaders;
@@ -46,5 +47,4 @@ public class ApiClientService {
                 .retrieve()
                 .bodyToMono(CharacterProfileDto.class);
     }
-
 }

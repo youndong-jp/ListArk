@@ -11,6 +11,9 @@ public class WebClientConfig {
     public WebClient webClient() {
         return WebClient.builder()
                 .baseUrl("https://developer-lostark.game.onstove.com")
+                .codecs(configurer ->
+                        configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024)) // 10MB로 증가
                 .build();
     }
+
 }

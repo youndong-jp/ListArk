@@ -25,7 +25,7 @@ public class CharacterProfileDto {
     private EngravingDto armoryEngraving;
 
     @JsonProperty("ArmoryGem")
-    private List<GemDto> armoryGem;
+    private ArmoryGemDto ArmoryGem;
 
     @JsonProperty("ArmorySkills")
     private List<SkillDto> armorySkills;

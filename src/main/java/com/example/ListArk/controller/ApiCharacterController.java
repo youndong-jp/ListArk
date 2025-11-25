@@ -1,5 +1,6 @@
 package com.example.ListArk.controller;
 
+import com.example.ListArk.Dto.character.CharacterProfileDto;
 import com.example.ListArk.Dto.SiblingCharacterDto;
 import com.example.ListArk.common.ApiResponse;
 import com.example.ListArk.service.ApiClientService;
@@ -24,5 +25,11 @@ public class ApiCharacterController {
     public ApiResponse<List<SiblingCharacterDto>> getSiblings(@PathVariable String name) {
         List<SiblingCharacterDto> siblings = apiClientService.getCharacterSiblings(name).block();
         return ApiResponse.ok(siblings);
+    }
+
+    @GetMapping("/{name}/profile")
+    public ApiResponse<CharacterProfileDto> getProfile(@PathVariable String name) {
+        CharacterProfileDto profile = apiClientService.getCharacterProfile(name).block();
+        return ApiResponse.ok(profile);
     }
 }
