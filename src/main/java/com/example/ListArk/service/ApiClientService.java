@@ -27,11 +27,12 @@ public class ApiClientService {
         return webClient.get()
                 .uri("/news/notices")
                 .header("accept", "application/json")
-                .header("authorization", "bearer " + apiKey)  // ← 수정됨!
+                .header("authorization", "bearer " + apiKey)
                 .retrieve()
                 .bodyToFlux(NoticeDto.class)
                 .collectList();
     }
+
     public Mono<List<NoticeDto>> getFilteredNotices(String type) {
         return getNotices()
                 .map(list -> list.stream()
