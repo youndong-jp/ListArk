@@ -1,9 +1,9 @@
 package com.example.ListArk.service;
 
-import com.example.ListArk.Dto.armory.EngravingEffectDto;
-import com.example.ListArk.Dto.armory.StatDto;
-import com.example.ListArk.Dto.character.CharacterProfileDto;
-import com.example.ListArk.Dto.character.ProfileDto;
+import com.example.ListArk.Dto.raw.armory.EngravingEffectDto;
+import com.example.ListArk.Dto.raw.armory.StatDto;
+import com.example.ListArk.Dto.raw.CharacterArmoryDto;
+import com.example.ListArk.Dto.tidy.ProfileTidyDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +18,9 @@ public class CharacterServiceImpl implements CharacterService {
     private final ApiClientService apiClientService;
 
     @Override
-    public ProfileDto getCharacterProfile(String characterName) {
+    public ProfileTidyDto getCharacterProfile(String characterName) {
 
-        CharacterProfileDto raw = apiClientService
+        CharacterArmoryDto raw = apiClientService
                 .getCharacterProfile(characterName)
                 .block();
 
@@ -31,8 +31,8 @@ public class CharacterServiceImpl implements CharacterService {
         return convertToTidy(raw);
     }
 
-    private ProfileDto convertToTidy(CharacterProfileDto raw) {
-        ProfileDto dto = new ProfileDto();
+    private ProfileTidyDto convertToTidy(CharacterArmoryDto raw) {
+        ProfileTidyDto dto = new ProfileTidyDto();
 
         var p = raw.getArmoryProfile();
 

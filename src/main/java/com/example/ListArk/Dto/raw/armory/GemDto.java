@@ -1,4 +1,4 @@
-package com.example.ListArk.Dto.armory;
+package com.example.ListArk.Dto.raw.armory;
 
 import lombok.Data;
 

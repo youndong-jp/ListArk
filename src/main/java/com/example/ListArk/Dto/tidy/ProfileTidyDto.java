@@ -1,11 +1,11 @@
-package com.example.ListArk.Dto.character;
+package com.example.ListArk.Dto.tidy;
 
 import lombok.Data;
 import java.util.List;
 import java.util.Map;
 
 @Data
-public class ProfileDto {
+public class ProfileTidyDto {
     private String characterName;
     private String characterClassName;
     private String serverName;

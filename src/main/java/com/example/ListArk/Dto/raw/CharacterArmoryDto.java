@@ -1,13 +1,13 @@
-package com.example.ListArk.Dto.character;
+package com.example.ListArk.Dto.raw;
 
-import com.example.ListArk.Dto.armory.*;
+import com.example.ListArk.Dto.raw.armory.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class CharacterProfileDto {
+public class CharacterArmoryDto {
 
     @JsonProperty("ArmoryProfile")
     private ArmoryProfileDto armoryProfile;
@@ -25,7 +25,7 @@ public class CharacterProfileDto {
     private EngravingDto armoryEngraving;
 
     @JsonProperty("ArmoryGem")
-    private ArmoryGemDto ArmoryGem;
+    private ArmoryGemDto armoryGem;
 
     @JsonProperty("ArmorySkills")
     private List<SkillDto> armorySkills;

@@ -1,10 +1,10 @@
-package com.example.ListArk.Dto.armory;
+package com.example.ListArk.Dto.raw.armory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class EngravingEffectDto {
+public class CardEffectDto {
 
     @JsonProperty("Name")
     private String name;

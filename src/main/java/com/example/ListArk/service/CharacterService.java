@@ -1,7 +1,7 @@
 package com.example.ListArk.service;
 
-import com.example.ListArk.Dto.character.ProfileDto;
+import com.example.ListArk.Dto.tidy.ProfileTidyDto;
 
 public interface CharacterService {
-    ProfileDto getCharacterProfile(String characterName);
+    ProfileTidyDto getCharacterProfile(String characterName);
 }
