@@ -28,7 +28,7 @@ public class CharacterArmoryDto {
     private ArmoryGemDto armoryGem;
 
     @JsonProperty("ArmorySkills")
-    private List<SkillDto> armorySkills;
+    private List<TripodDto> armorySkills;
 
     @JsonProperty("ArmoryStat")
     private List<StatDto> armoryStat;

@@ -1,13 +1,26 @@
 package com.example.ListArk.Dto.raw.armory;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class GemDto {
-    private int Slot;
-    private String Name;
-    private String Grade;
-    private int Level;
-    private String Icon;
-    private String Tooltip;
+
+    @JsonProperty("Slot")
+    private int slot;
+
+    @JsonProperty("Name")
+    private String name;
+
+    @JsonProperty("Icon")
+    private String icon;
+
+    @JsonProperty("Level")
+    private int level;
+
+    @JsonProperty("Grade")
+    private String grade;
+
+    @JsonProperty("Tooltip")
+    private String tooltip;
 }

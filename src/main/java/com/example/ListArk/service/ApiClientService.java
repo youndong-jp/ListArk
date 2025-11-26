@@ -5,8 +5,18 @@ import java.util.List;
 import com.example.ListArk.Dto.raw.CharacterArmoryDto;
 import com.example.ListArk.Dto.SiblingCharacterDto;
 import com.example.ListArk.Dto.notice.NoticeDto;
+import com.example.ListArk.Dto.raw.armory.ArmoryGemDto;
+import com.example.ListArk.Dto.raw.armory.AvatarDto;
+import com.example.ListArk.Dto.raw.armory.EngravingDto;
+import com.example.ListArk.Dto.raw.armory.StatDto;
+import com.example.ListArk.Dto.tidy.ProfileTidyDto;
+import com.example.ListArk.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -46,4 +56,38 @@ public class ApiClientService {
                 .retrieve()
                 .bodyToMono(CharacterArmoryDto.class);
     }
+    // Stats (특성)
+    public Mono<List<StatDto>> getCharacterStats(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/stats", name)
+                .retrieve()
+                .bodyToFlux(StatDto.class)
+                .collectList();
+    }
+
+    // Engravings (각인)
+    public Mono<EngravingDto> getCharacterEngravings(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/engravings", name)
+                .retrieve()
+                .bodyToMono(EngravingDto.class);
+    }
+
+    // Gems (보석)
+    public Mono<ArmoryGemDto> getCharacterGems(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/gems", name)
+                .retrieve()
+                .bodyToMono(ArmoryGemDto.class);
+    }
+
+    // Avatars (아바타)
+    public Mono<List<AvatarDto>> getCharacterAvatars(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/avatars", name)
+                .retrieve()
+                .bodyToFlux(AvatarDto.class)
+                .collectList();
+    }
+
 }

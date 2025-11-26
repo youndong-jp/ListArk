@@ -1,4 +1,4 @@
-package com.example.ListArk.config;
+package com.example.ListArk.Config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +14,8 @@ public class WebClientConfig {
 
     @Bean
     public WebClient webClient() {
+        System.out.println("🔥 Loaded API KEY in WebClientConfig = " + apiKey);
+
         return WebClient.builder()
                 .baseUrl("https://developer-lostark.game.onstove.com")
                 .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)

@@ -18,5 +18,23 @@ public class ApiCharacterRawController {
         return apiClientService.getCharacterProfile(name).block();
     }
 
+        @GetMapping("/{name}/gems")
+        public Object getRawGems(@PathVariable String name) {
+            return apiClientService.getCharacterGems(name).block();
+        }
 
-}
+        @GetMapping("/{name}/stats")
+        public Object getRawStats(@PathVariable String name) {
+            return apiClientService.getCharacterStats(name).block();
+        }
+
+        @GetMapping("/{name}/engravings")
+        public Object getRawEngravings(@PathVariable String name) {
+            return apiClientService.getCharacterEngravings(name).block();
+        }
+
+        @GetMapping("/{name}/avatars")
+        public Object getRawAvatars(@PathVariable String name) {
+            return apiClientService.getCharacterAvatars(name).block();
+        }
+    }
