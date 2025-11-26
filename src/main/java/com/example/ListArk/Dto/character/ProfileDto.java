@@ -1,0 +1,24 @@
+package com.example.ListArk.Dto.character;
+
+import lombok.Data;
+import java.util.List;
+import java.util.Map;
+
+@Data
+public class ProfileDto {
+    private String characterName;
+    private String characterClassName;
+    private String serverName;
+
+    private int characterLevel;
+    private String itemLevel;
+
+    private String title;
+    private String guildName;
+
+    private String pvpGradeName;
+    private int pvpLevel;
+
+    private Map<String, Integer> stats;
+    private List<String> engravings;
+}

@@ -1,25 +1,22 @@
 package com.example.ListArk.controller;
 
-import com.example.ListArk.Dto.character.CharacterProfileDto;
 import com.example.ListArk.Dto.SiblingCharacterDto;
+import com.example.ListArk.Dto.character.ProfileDto;
 import com.example.ListArk.common.ApiResponse;
 import com.example.ListArk.service.ApiClientService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.ListArk.service.CharacterService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/characters")
+@RequiredArgsConstructor
 public class ApiCharacterController {
 
     private final ApiClientService apiClientService;
-
-    public ApiCharacterController(ApiClientService apiClientService) {
-        this.apiClientService = apiClientService;
-    }
+    private final CharacterService characterService;
 
     @GetMapping("/{name}/siblings")
     public ApiResponse<List<SiblingCharacterDto>> getSiblings(@PathVariable String name) {
@@ -28,8 +25,10 @@ public class ApiCharacterController {
     }
 
     @GetMapping("/{name}/profile")
-    public ApiResponse<CharacterProfileDto> getProfile(@PathVariable String name) {
-        CharacterProfileDto profile = apiClientService.getCharacterProfile(name).block();
+    public ApiResponse<ProfileDto> getProfile(@PathVariable String name) {
+
+        ProfileDto profile = characterService.getCharacterProfile(name);
+
         return ApiResponse.ok(profile);
     }
 }
