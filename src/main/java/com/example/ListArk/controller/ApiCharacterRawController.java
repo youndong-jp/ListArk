@@ -1,4 +1,5 @@
 package com.example.ListArk.controller;
+
 import com.example.ListArk.service.ApiClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,28 +14,33 @@ public class ApiCharacterRawController {
 
     private final ApiClientService apiClientService;
 
+    /** RAW 통합 아바타 + 프로필 */
     @GetMapping("/{name}/profiles")
-    public Object getRawProfile(@PathVariable String name) {
-        return apiClientService.getCharacterProfile(name).block();
+    public String getRawProfile(@PathVariable String name) {
+        return apiClientService.getRawCharacterProfile(name).block();
     }
 
-        @GetMapping("/{name}/gems")
-        public Object getRawGems(@PathVariable String name) {
-            return apiClientService.getCharacterGems(name).block();
-        }
-
-        @GetMapping("/{name}/stats")
-        public Object getRawStats(@PathVariable String name) {
-            return apiClientService.getCharacterStats(name).block();
-        }
-
-        @GetMapping("/{name}/engravings")
-        public Object getRawEngravings(@PathVariable String name) {
-            return apiClientService.getCharacterEngravings(name).block();
-        }
-
-        @GetMapping("/{name}/avatars")
-        public Object getRawAvatars(@PathVariable String name) {
-            return apiClientService.getCharacterAvatars(name).block();
-        }
+    /** RAW gems */
+    @GetMapping("/{name}/gems")
+    public String getRawGems(@PathVariable String name) {
+        return apiClientService.getRawCharacterGems(name).block();
     }
+
+    /** RAW stats */
+    @GetMapping("/{name}/stats")
+    public String getRawStats(@PathVariable String name) {
+        return apiClientService.getRawCharacterStats(name).block();
+    }
+
+    /** RAW engravings */
+    @GetMapping("/{name}/engravings")
+    public String getRawEngravings(@PathVariable String name) {
+        return apiClientService.getRawCharacterEngravings(name).block();
+    }
+
+    /** RAW avatars */
+    @GetMapping("/{name}/avatars")
+    public String getRawAvatars(@PathVariable String name) {
+        return apiClientService.getRawCharacterAvatars(name).block();
+    }
+}

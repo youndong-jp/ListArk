@@ -1,7 +1,7 @@
 package com.example.ListArk.service;
 
-import com.example.ListArk.Dto.raw.armory.EngravingEffectDto;
-import com.example.ListArk.Dto.raw.armory.StatDto;
+import com.example.ListArk.Dto.raw.armory.engraving.EngravingDto;
+import com.example.ListArk.Dto.raw.armory.profile.StatDto;
 import com.example.ListArk.Dto.raw.CharacterArmoryDto;
 import com.example.ListArk.Dto.tidy.ProfileTidyDto;
 import lombok.RequiredArgsConstructor;
@@ -45,10 +45,12 @@ public class CharacterServiceImpl implements CharacterService {
         dto.setTitle(p.getTitle());
         dto.setPvpGradeName(p.getPvpGradeName());
 
-        // ⭐
-        if (raw.getArmoryStat() != null) {
+
+        if (raw.getArmoryProfile() != null &&
+                raw.getArmoryProfile().getStats() != null) {
+
             dto.setStats(
-                    raw.getArmoryStat().stream()
+                    raw.getArmoryProfile().getStats().stream()
                             .collect(Collectors.toMap(
                                     StatDto::getType,
                                     s -> Integer.parseInt(s.getValue())
@@ -64,7 +66,7 @@ public class CharacterServiceImpl implements CharacterService {
 
             dto.setEngravings(
                     raw.getArmoryEngraving().getEngravings().stream()
-                            .map(EngravingEffectDto::getName)
+                            .map(EngravingDto::getName)
                             .toList()
             );
         } else {

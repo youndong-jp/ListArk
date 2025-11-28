@@ -5,18 +5,12 @@ import java.util.List;
 import com.example.ListArk.Dto.raw.CharacterArmoryDto;
 import com.example.ListArk.Dto.SiblingCharacterDto;
 import com.example.ListArk.Dto.notice.NoticeDto;
-import com.example.ListArk.Dto.raw.armory.ArmoryGemDto;
-import com.example.ListArk.Dto.raw.armory.AvatarDto;
-import com.example.ListArk.Dto.raw.armory.EngravingDto;
-import com.example.ListArk.Dto.raw.armory.StatDto;
-import com.example.ListArk.Dto.tidy.ProfileTidyDto;
-import com.example.ListArk.common.ApiResponse;
+import com.example.ListArk.Dto.raw.armory.avatar.AvatarDto;
+import com.example.ListArk.Dto.raw.armory.engraving.ArmoryEngravingDto;
+import com.example.ListArk.Dto.raw.armory.gem.ArmoryGemDto;
+import com.example.ListArk.Dto.raw.armory.profile.StatDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -50,6 +44,41 @@ public class ApiClientService {
                 .collectList();
     }
 
+    public Mono<String> getRawCharacterProfile(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}", name)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
+    public Mono<String> getRawCharacterGems(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/gems", name)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
+    public Mono<String> getRawCharacterStats(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/stats", name)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
+    public Mono<String> getRawCharacterEngravings(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/engravings", name)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
+    public Mono<String> getRawCharacterAvatars(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/avatars", name)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
     public Mono<CharacterArmoryDto> getCharacterProfile(String name) {
         return webClient.get()
                 .uri("/armories/characters/{name}", name)
@@ -66,11 +95,11 @@ public class ApiClientService {
     }
 
     // Engravings (각인)
-    public Mono<EngravingDto> getCharacterEngravings(String name) {
+    public Mono<ArmoryEngravingDto> getCharacterEngravings(String name) {
         return webClient.get()
                 .uri("/armories/characters/{name}/engravings", name)
                 .retrieve()
-                .bodyToMono(EngravingDto.class);
+                .bodyToMono(ArmoryEngravingDto.class);
     }
 
     // Gems (보석)

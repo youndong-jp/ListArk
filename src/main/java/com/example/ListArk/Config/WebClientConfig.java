@@ -14,7 +14,6 @@ public class WebClientConfig {
 
     @Bean
     public WebClient webClient() {
-        System.out.println("🔥 Loaded API KEY in WebClientConfig = " + apiKey);
 
         return WebClient.builder()
                 .baseUrl("https://developer-lostark.game.onstove.com")
