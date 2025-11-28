@@ -14,31 +14,30 @@ public class ApiCharacterRawController {
 
     private final ApiClientService apiClientService;
 
-    /** RAW 통합 아바타 + 프로필 */
+    @GetMapping("/{name}/armory")
+    public String getRawCharacterArmory(@PathVariable String name) {
+        return apiClientService.getRawCharacterArmory(name).block();
+    }
     @GetMapping("/{name}/profiles")
     public String getRawProfile(@PathVariable String name) {
         return apiClientService.getRawCharacterProfile(name).block();
     }
 
-    /** RAW gems */
     @GetMapping("/{name}/gems")
     public String getRawGems(@PathVariable String name) {
         return apiClientService.getRawCharacterGems(name).block();
     }
 
-    /** RAW stats */
     @GetMapping("/{name}/stats")
     public String getRawStats(@PathVariable String name) {
         return apiClientService.getRawCharacterStats(name).block();
     }
 
-    /** RAW engravings */
     @GetMapping("/{name}/engravings")
     public String getRawEngravings(@PathVariable String name) {
         return apiClientService.getRawCharacterEngravings(name).block();
     }
 
-    /** RAW avatars */
     @GetMapping("/{name}/avatars")
     public String getRawAvatars(@PathVariable String name) {
         return apiClientService.getRawCharacterAvatars(name).block();

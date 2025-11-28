@@ -8,6 +8,7 @@ import com.example.ListArk.Dto.notice.NoticeDto;
 import com.example.ListArk.Dto.raw.armory.avatar.AvatarDto;
 import com.example.ListArk.Dto.raw.armory.engraving.ArmoryEngravingDto;
 import com.example.ListArk.Dto.raw.armory.gem.ArmoryGemDto;
+import com.example.ListArk.Dto.raw.armory.profile.ArmoryProfileDto;
 import com.example.ListArk.Dto.raw.armory.profile.StatDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,12 +45,20 @@ public class ApiClientService {
                 .collectList();
     }
 
-    public Mono<String> getRawCharacterProfile(String name) {
+    public Mono<String> getRawCharacterArmory(String name) {
         return webClient.get()
                 .uri("/armories/characters/{name}", name)
                 .retrieve()
                 .bodyToMono(String.class);
     }
+
+    public Mono<String> getRawCharacterProfile(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/profiles", name)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
 
     public Mono<String> getRawCharacterGems(String name) {
         return webClient.get()
@@ -79,13 +88,21 @@ public class ApiClientService {
                 .bodyToMono(String.class);
     }
 
-    public Mono<CharacterArmoryDto> getCharacterProfile(String name) {
+    public Mono<CharacterArmoryDto> getCharacterArmory(String name) {
         return webClient.get()
                 .uri("/armories/characters/{name}", name)
                 .retrieve()
                 .bodyToMono(CharacterArmoryDto.class);
     }
-    // Stats (특성)
+
+
+    public Mono<ArmoryProfileDto> getCharacterProfile(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/profiles", name)
+                .retrieve()
+                .bodyToMono(ArmoryProfileDto.class);
+    }
+
     public Mono<List<StatDto>> getCharacterStats(String name) {
         return webClient.get()
                 .uri("/armories/characters/{name}/stats", name)

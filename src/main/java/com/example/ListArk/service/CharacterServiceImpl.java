@@ -21,7 +21,7 @@ public class CharacterServiceImpl implements CharacterService {
     public ProfileTidyDto getCharacterProfile(String characterName) {
 
         CharacterArmoryDto raw = apiClientService
-                .getCharacterProfile(characterName)
+                .getCharacterArmory(characterName)
                 .block();
 
         if (raw == null || raw.getArmoryProfile() == null) {
