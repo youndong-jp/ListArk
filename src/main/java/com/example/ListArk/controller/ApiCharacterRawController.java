@@ -42,4 +42,35 @@ public class ApiCharacterRawController {
     public String getRawAvatars(@PathVariable String name) {
         return apiClientService.getRawCharacterAvatars(name).block();
     }
+
+    @GetMapping("/{name}/combat-skills")
+    public String getRawCombatSkills(@PathVariable String name) {
+        return apiClientService.getRawCharacterCombatSkills(name).block();
+    }
+
+    @GetMapping("/{name}/cards")
+    public String getRawCards(@PathVariable String name) {
+        return apiClientService.getRawCharacterCards(name).block();
+    }
+
+    @GetMapping("/{name}/colosseums")
+    public String getRawColosseums(@PathVariable String name) {
+        return apiClientService.getRawCharacterColosseums(name).block();
+    }
+
+    @GetMapping("/{name}/collectibles")
+    public String getRawCollectibles(@PathVariable String name) {
+        return apiClientService.getRawCharacterCollectibles(name).block();
+    }
+
+    @GetMapping("/{name}/arkpassive")
+    public String getRawArkPassive(@PathVariable String name) {
+        return apiClientService.getRawCharacterArkPassive(name).block();
+    }
+
+    @GetMapping("/{name}/arkgrid")
+    public String getRawArkGrid(@PathVariable String name) {
+        return apiClientService.getRawCharacterArkGrid(name).block();
+    }
+
 }

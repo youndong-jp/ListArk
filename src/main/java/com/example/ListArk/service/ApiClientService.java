@@ -5,7 +5,13 @@ import java.util.List;
 import com.example.ListArk.Dto.raw.CharacterArmoryDto;
 import com.example.ListArk.Dto.SiblingCharacterDto;
 import com.example.ListArk.Dto.notice.NoticeDto;
+import com.example.ListArk.Dto.raw.armory.arkgrid.ArmoryArkGridDto;
+import com.example.ListArk.Dto.raw.armory.arkpassive.ArmoryArkPassiveDto;
 import com.example.ListArk.Dto.raw.armory.avatar.AvatarDto;
+import com.example.ListArk.Dto.raw.armory.card.ArmoryCardDto;
+import com.example.ListArk.Dto.raw.armory.collectibles.CollectibleDto;
+import com.example.ListArk.Dto.raw.armory.colosseum.ArmoryColosseumDto;
+import com.example.ListArk.Dto.raw.armory.combatskill.CombatSkillDto;
 import com.example.ListArk.Dto.raw.armory.engraving.ArmoryEngravingDto;
 import com.example.ListArk.Dto.raw.armory.gem.ArmoryGemDto;
 import com.example.ListArk.Dto.raw.armory.profile.ArmoryProfileDto;
@@ -88,6 +94,48 @@ public class ApiClientService {
                 .bodyToMono(String.class);
     }
 
+    public Mono<String> getRawCharacterCombatSkills(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/combat-skills", name)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
+    public Mono<String> getRawCharacterCards(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/cards", name)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
+    public Mono<String> getRawCharacterColosseums(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/colosseums", name)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
+    public Mono<String> getRawCharacterCollectibles(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/collectibles", name)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
+    public Mono<String> getRawCharacterArkPassive(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/arkpassive", name)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
+    public Mono<String> getRawCharacterArkGrid(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/arkgrid", name)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
     public Mono<CharacterArmoryDto> getCharacterArmory(String name) {
         return webClient.get()
                 .uri("/armories/characters/{name}", name)
@@ -111,7 +159,6 @@ public class ApiClientService {
                 .collectList();
     }
 
-    // Engravings (각인)
     public Mono<ArmoryEngravingDto> getCharacterEngravings(String name) {
         return webClient.get()
                 .uri("/armories/characters/{name}/engravings", name)
@@ -119,7 +166,6 @@ public class ApiClientService {
                 .bodyToMono(ArmoryEngravingDto.class);
     }
 
-    // Gems (보석)
     public Mono<ArmoryGemDto> getCharacterGems(String name) {
         return webClient.get()
                 .uri("/armories/characters/{name}/gems", name)
@@ -127,13 +173,54 @@ public class ApiClientService {
                 .bodyToMono(ArmoryGemDto.class);
     }
 
-    // Avatars (아바타)
     public Mono<List<AvatarDto>> getCharacterAvatars(String name) {
         return webClient.get()
                 .uri("/armories/characters/{name}/avatars", name)
                 .retrieve()
                 .bodyToFlux(AvatarDto.class)
                 .collectList();
+    }
+    public Mono<List<CombatSkillDto>> getCharacterCombatSkills(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/combat-skills", name)
+                .retrieve()
+                .bodyToFlux(CombatSkillDto.class)
+                .collectList();
+    }
+
+    public Mono<ArmoryCardDto> getCharacterCards(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/cards", name)
+                .retrieve()
+                .bodyToMono(ArmoryCardDto.class);
+    }
+
+    public Mono<ArmoryColosseumDto> getCharacterColosseums(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/colosseums", name)
+                .retrieve()
+                .bodyToMono(ArmoryColosseumDto.class);
+    }
+    public Mono<List<CollectibleDto>> getCharacterCollectibles(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/collectibles", name)
+                .retrieve()
+                .bodyToFlux(CollectibleDto.class)
+                .collectList();
+    }
+
+    public Mono<ArmoryArkPassiveDto> getCharacterArkPassive(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/arkpassive", name)
+                .retrieve()
+                .bodyToMono(ArmoryArkPassiveDto.class);
+    }
+
+    public Mono<ArmoryArkGridDto> getCharacterArkGrid(String name) {
+        return webClient.get()
+                .uri("/armories/characters/{name}/arkgrid", name)
+                .retrieve()
+                .bodyToMono(ArmoryArkGridDto.class);
     }
 
 }
