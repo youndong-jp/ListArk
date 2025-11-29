@@ -1,4 +1,4 @@
-package com.example.ListArk.Dto;
+package com.example.ListArk.Dto.raw.character;
 
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonProperty;

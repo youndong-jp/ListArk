@@ -1,6 +1,6 @@
 package com.example.ListArk.controller;
 
-import com.example.ListArk.dto.PingResponseDto;
+import com.example.ListArk.Dto.ping.PingResponseDto;
 import com.example.ListArk.service.PingService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

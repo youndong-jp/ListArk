@@ -1,33 +1,35 @@
 package com.example.ListArk.controller;
 
-import com.example.ListArk.Dto.notice.NoticeDto;
+import com.example.ListArk.Dto.raw.notice.NoticeDto;
+import com.example.ListArk.Dto.raw.notice.NoticeViewDto;
 import com.example.ListArk.common.ApiResponse;
-import com.example.ListArk.service.ApiClientService;
+import com.example.ListArk.service.NoticeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/notice")
+@RequiredArgsConstructor
 public class ApiNoticeController {
 
-    private final ApiClientService apiClientService;
-
-    public ApiNoticeController(ApiClientService apiClientService) {
-        this.apiClientService = apiClientService;
-    }
+    private final NoticeService noticeService;
 
     @GetMapping("/notices")
     public ApiResponse<List<NoticeDto>> getNotices() {
-        List<NoticeDto> notices = apiClientService.getNotices().block();
-        return ApiResponse.ok(notices);
-    }
-    @GetMapping("/notices/filter")
-    public ApiResponse<List<NoticeDto>> getFilteredNotices(
-            @RequestParam(required = false) String type
-    ) {
-        List<NoticeDto> result = apiClientService.getFilteredNotices(type).block();
-        return ApiResponse.ok(result);
+        return ApiResponse.ok(noticeService.getNotices().block());
     }
 
+    @GetMapping("/notices/filter")
+    public ApiResponse<List<NoticeDto>> getFilteredNotices(@RequestParam(required = false) String type) {
+        return ApiResponse.ok(noticeService.getFilteredNotices(type).block());
+    }
+
+    @GetMapping("/notices/views")
+    public ApiResponse<List<NoticeViewDto>> getNoticeViews() {
+        return ApiResponse.ok(noticeService.getNoticeViews().block());
+    }
 }
+
+

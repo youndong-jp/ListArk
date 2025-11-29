@@ -1,4 +1,4 @@
-package com.example.ListArk.Dto.notice;
+package com.example.ListArk.Dto.raw.notice;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -27,5 +27,5 @@ public class ArkGridSlotDto {
     private String tooltip;
 
     @JsonProperty("Gems")
-    private List<com.example.ListArk.Dto.raw.armory.arkgrid.ArkGridGemDto> gems;
+    private List<ArkGridGemDto> gems;
 }

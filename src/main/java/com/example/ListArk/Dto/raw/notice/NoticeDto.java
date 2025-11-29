@@ -1,4 +1,4 @@
-package com.example.ListArk.Dto.notice;
+package com.example.ListArk.Dto.raw.notice;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

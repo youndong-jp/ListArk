@@ -1,4 +1,4 @@
-package com.example.ListArk.Dto.raw;
+package com.example.ListArk.Dto.raw.armory;
 
 import com.example.ListArk.Dto.raw.armory.arkgrid.ArmoryArkGridDto;
 import com.example.ListArk.Dto.raw.armory.arkpassive.ArmoryArkPassiveDto;
@@ -17,7 +17,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class CharacterArmoryDto {
+public class ArmoryDto {
 
     @JsonProperty("ArmoryProfile")
     private ArmoryProfileDto armoryProfile;

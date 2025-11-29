@@ -1,4 +1,4 @@
-package com.example.ListArk.dto;
+package com.example.ListArk.Dto.ping;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
