@@ -1,6 +1,8 @@
 package com.example.ListArk.controller;
 
 import com.example.ListArk.Dto.SiblingCharacterDto;
+import com.example.ListArk.Dto.raw.CharacterArmoryDto;
+import com.example.ListArk.Dto.raw.armory.colosseum.ArmoryColosseumDto;
 import com.example.ListArk.Dto.tidy.ProfileTidyDto;
 import com.example.ListArk.common.ApiResponse;
 import com.example.ListArk.service.ApiClientService;
@@ -30,5 +32,13 @@ public class ApiCharacterController {
         ProfileTidyDto profile = characterService.getCharacterProfile(name);
 
         return ApiResponse.ok(profile);
+    }
+    @GetMapping("/{name}/armory-test")
+    public CharacterArmoryDto testArmory(@PathVariable String name) {
+        return apiClientService.getCharacterArmory(name).block();
+    }
+    @GetMapping("/{name}/colosseum-test")
+    public ArmoryColosseumDto testColosseum(@PathVariable String name) {
+        return apiClientService.getCharacterColosseums(name).block();
     }
 }

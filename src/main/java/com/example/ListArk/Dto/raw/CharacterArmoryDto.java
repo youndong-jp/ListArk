@@ -26,7 +26,7 @@ public class CharacterArmoryDto {
     private List<EquipmentDto> armoryEquipment;
 
     @JsonProperty("ArmoryAvatars")
-    private AvatarDto armoryAvatar;
+    private List<AvatarDto> armoryAvatar;
 
     @JsonProperty("ArmorySkills")
     private List<CombatSkillDto> armorySkills;
@@ -40,16 +40,15 @@ public class CharacterArmoryDto {
     @JsonProperty("ArmoryGem")
     private ArmoryGemDto armoryGem;
 
-    @JsonProperty("Colosseum")
-    private ArmoryColosseumDto colosseum;
+    @JsonProperty("ColosseumInfo")
+    private ArmoryColosseumDto colosseumInfo;
 
-    @JsonProperty("ArmoryCollectibles")
-    private List<CollectibleDto> armoryCollectibles;
+    @JsonProperty("Collectibles")
+    private List<CollectibleDto> collectibles;
 
-    @JsonProperty("ArmoryArkPassive")
-    private ArmoryArkPassiveDto armoryArkPassive;
+    @JsonProperty("ArkPassive")
+    private ArmoryArkPassiveDto arkPassive;
 
-    @JsonProperty("ArmoryArkGrid")
-    private ArmoryArkGridDto armoryArkGrid;
-
+    @JsonProperty("ArkGrid")
+    private ArmoryArkGridDto arkGrid;
 }
