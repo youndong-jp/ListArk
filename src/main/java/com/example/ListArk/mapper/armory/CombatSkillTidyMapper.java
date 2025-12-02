@@ -2,9 +2,11 @@ package com.example.ListArk.mapper.armory;
 
 import com.example.ListArk.Dto.raw.armory.ArmoryDto;
 import com.example.ListArk.Dto.raw.armory.combatskill.CombatSkillDto;
+import com.example.ListArk.Dto.raw.armory.combatskill.RuneDto;
 import com.example.ListArk.Dto.raw.armory.combatskill.TripodDto;
 import com.example.ListArk.Dto.tidy.armory.combatskill.CombatSkillTidyDto;
 import com.example.ListArk.Dto.tidy.armory.combatskill.TripodTidyDto;
+import com.example.ListArk.mapper.NullSafe;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,51 +15,48 @@ import java.util.List;
 public class CombatSkillTidyMapper {
 
     public List<CombatSkillTidyDto> toTidy(ArmoryDto raw) {
+        List<CombatSkillDto> skills = NullSafe.get(raw::getArmorySkills, List.<CombatSkillDto>of());
 
-        if (raw == null || raw.getArmorySkills() == null) {
-            return List.of();
-        }
-
-        return raw.getArmorySkills().stream()
-                .map(this::convert)
+        return skills.stream()
+                .map(this::convertSkill)
                 .toList();
     }
 
-    /** CombatSkillDto → CombatSkillTidyDto */
-    private CombatSkillTidyDto convert(CombatSkillDto s) {
-
+    private CombatSkillTidyDto convertSkill(CombatSkillDto s) {
         CombatSkillTidyDto dto = new CombatSkillTidyDto();
 
-        dto.setName(s.getName());
-        dto.setLevel(s.getLevel());
-        dto.setIcon(s.getIcon());
+        dto.setName(NullSafe.get(s::getName, ""));
+        dto.setIcon(NullSafe.get(s::getIcon, ""));
+        dto.setLevel(NullSafe.get(s::getLevel, 0));
 
-        // Tripods tidy
-        if (s.getTripods() != null) {
-            List<TripodTidyDto> tripodList = s.getTripods().stream()
-                    .map(this::convertTripod)
-                    .toList();
-            dto.setTripods(tripodList);
-        } else {
-            dto.setTripods(List.of());
-        }
+        // 트라이포드 변환
+        List<TripodDto> tripods = NullSafe.get(s::getTripods, List.<TripodDto>of());
+        dto.setTripods(
+                tripods.stream()
+                        .map(this::convertTripod)
+                        .toList()
+        );
 
-        // 룬은 “이름 Lv.?” 형태로 표시
-        dto.setRune(s.getRune() != null ? s.getRune().getName() : null);
+        // 룬 이름 추출 (RuneDto → String)
+        dto.setRune(extractRuneName(s.getRune()));
 
         return dto;
     }
 
-    /** TripodDto → TripodTidyDto */
     private TripodTidyDto convertTripod(TripodDto t) {
-
         TripodTidyDto dto = new TripodTidyDto();
 
-        dto.setTier(t.getTier());
-        dto.setSlot(t.getSlot());
-        dto.setName(t.getName());
-        dto.setSelected(t.isSelected());
+        dto.setTier(NullSafe.get(t::getTier, 0));
+        dto.setSlot(NullSafe.get(t::getSlot, 0));
+        dto.setName(NullSafe.get(t::getName, ""));
+        dto.setSelected(t.isSelected());  // boolean이므로 기본값 불필요
 
         return dto;
+    }
+
+    /** RuneDto에서 룬 이름만 추출 */
+    private String extractRuneName(RuneDto rune) {
+        if (rune == null) return "";
+        return NullSafe.get(rune::getName, "");
     }
 }

@@ -7,6 +7,7 @@ import com.example.ListArk.Dto.raw.armory.arkpassive.ArkPassivePointDto;
 import com.example.ListArk.Dto.tidy.armory.arkpassive.ArkPassiveEffectTidyDto;
 import com.example.ListArk.Dto.tidy.armory.arkpassive.ArkPassivePointTidyDto;
 import com.example.ListArk.Dto.tidy.armory.arkpassive.ArkPassiveTidyDto;
+import com.example.ListArk.mapper.NullSafe;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,43 +16,38 @@ import java.util.List;
 public class ArkPassiveTidyMapper {
 
     public ArkPassiveTidyDto toTidy(ArmoryDto raw) {
+        ArmoryArkPassiveDto source = NullSafe.get(raw::getArkPassive, null);
 
-        if (raw == null || raw.getArkPassive() == null) {
-            return null;
+        if (source == null) {
+            return empty();
         }
-
-        ArmoryArkPassiveDto source = raw.getArkPassive();
 
         ArkPassiveTidyDto dto = new ArkPassiveTidyDto();
 
-        dto.setActive(source.isArkPassive());
+        dto.setActive(NullSafe.get(source::isArkPassive, false));
 
-        // points
-        if (source.getPoints() != null) {
-            dto.setPoints(
-                    source.getPoints().stream()
-                            .map(this::convertPoint)
-                            .toList()
-            );
-        } else {
-            dto.setPoints(List.of());
-        }
+        // Points 변환
+        List<ArkPassivePointTidyDto> points =
+                NullSafe.list(source.getPoints())
+                        .stream()
+                        .map(this::convertPoint)
+                        .toList();
+        dto.setPoints(points);
 
-        // effects
-        if (source.getEffects() != null) {
-            dto.setEffects(
-                    source.getEffects().stream()
-                            .map(this::convertEffect)
-                            .toList()
-            );
-        } else {
-            dto.setEffects(List.of());
-        }
+        // Effects 변환
+        List<ArkPassiveEffectTidyDto> effects =
+                NullSafe.list(source.getEffects())
+                        .stream()
+                        .map(this::convertEffect)
+                        .toList();
+        dto.setEffects(effects);
 
         return dto;
     }
 
-    /** null 대응용 빈 객체 */
+    /**
+     * Null 대응용 빈 객체
+     */
     private ArkPassiveTidyDto empty() {
         ArkPassiveTidyDto dto = new ArkPassiveTidyDto();
         dto.setActive(false);
@@ -60,18 +56,28 @@ public class ArkPassiveTidyMapper {
         return dto;
     }
 
+    /**
+     * Raw Point → Tidy Point
+     */
     private ArkPassivePointTidyDto convertPoint(ArkPassivePointDto p) {
         ArkPassivePointTidyDto dto = new ArkPassivePointTidyDto();
-        dto.setName(p.getName());
-        dto.setValue(p.getValue());
+
+        dto.setName(NullSafe.get(p::getName, ""));
+        dto.setValue(NullSafe.get(p::getValue, 0));
+
         return dto;
     }
 
+    /**
+     * Raw Effect → Tidy Effect
+     */
     private ArkPassiveEffectTidyDto convertEffect(ArkPassiveEffectDto e) {
         ArkPassiveEffectTidyDto dto = new ArkPassiveEffectTidyDto();
-        dto.setName(e.getName());
-        dto.setDescription(e.getDescription());
-        dto.setIcon(e.getIcon());
+
+        dto.setName(NullSafe.get(e::getName, ""));
+        dto.setDescription(NullSafe.get(e::getDescription, ""));
+        dto.setIcon(NullSafe.get(e::getIcon, ""));
+
         return dto;
     }
 }

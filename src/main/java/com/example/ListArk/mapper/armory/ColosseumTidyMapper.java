@@ -3,8 +3,10 @@ package com.example.ListArk.mapper.armory;
 import com.example.ListArk.Dto.raw.armory.ArmoryDto;
 import com.example.ListArk.Dto.raw.armory.colosseum.ArmoryColosseumDto;
 import com.example.ListArk.Dto.raw.armory.colosseum.ColosseumEntryDto;
+import com.example.ListArk.Dto.raw.armory.colosseum.CompetitiveDto;
 import com.example.ListArk.Dto.tidy.armory.colosseum.ColosseumSeasonDto;
 import com.example.ListArk.Dto.tidy.armory.colosseum.ColosseumTidyDto;
+import com.example.ListArk.mapper.NullSafe;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,45 +15,43 @@ import java.util.List;
 public class ColosseumTidyMapper {
 
     public ColosseumTidyDto toTidy(ArmoryDto raw) {
+        ArmoryColosseumDto col = NullSafe.get(raw::getColosseumInfo, null);
 
-        if (raw == null || raw.getColosseumInfo() == null) {
-            return null;
+        if (col == null) {
+            return new ColosseumTidyDto();
         }
-
-        ArmoryColosseumDto col = raw.getColosseumInfo();
 
         ColosseumTidyDto dto = new ColosseumTidyDto();
-        dto.setRank(col.getRank());
-        dto.setPreRank(col.getPreRank());
-        dto.setExp(col.getExp());
+        dto.setRank(NullSafe.get(col::getRank, 0));
+        dto.setPreRank(NullSafe.get(col::getPreRank, 0));
+        dto.setExp(NullSafe.get(col::getExp, 0));
 
-        if (col.getColosseums() != null) {
-            List<ColosseumSeasonDto> seasons = col.getColosseums().stream()
-                    .map(this::convertSeason)
-                    .toList();
-
-            dto.setSeasons(seasons);
-        }
+        List<ColosseumSeasonDto> seasons = NullSafe.list(col.getColosseums())
+                .stream()
+                .map(this::convertSeason)
+                .toList();
+        dto.setSeasons(seasons);
 
         return dto;
     }
 
-    /** Raw 시즌 -> Tidy 시즌 변환 */
-    private ColosseumSeasonDto convertSeason(ColosseumEntryDto s) {
-
+    /**
+     * Raw 시즌 → Tidy 시즌 변환
+     * 경쟁전(Competitive) 정보만 추출
+     */
+    private ColosseumSeasonDto convertSeason(ColosseumEntryDto entry) {
         ColosseumSeasonDto dto = new ColosseumSeasonDto();
+        dto.setSeasonName(NullSafe.get(entry::getSeasonName, ""));
 
-        dto.setSeasonName(s.getSeasonName());
+        CompetitiveDto competitive = NullSafe.get(entry::getCompetitive, null);
 
-        // 경쟁전 정보가 있을 때만
-        if (s.getCompetitive() != null) {
-            dto.setWin(s.getCompetitive().getVictoryCount());
-            dto.setLose(s.getCompetitive().getLoseCount());
-            dto.setTie(s.getCompetitive().getTieCount());
-
-            dto.setKill(s.getCompetitive().getKillCount());
-            dto.setDeath(s.getCompetitive().getDeathCount());
-            dto.setAssist(s.getCompetitive().getAceCount());
+        if (competitive != null) {
+            dto.setWin(NullSafe.get(competitive::getVictoryCount, 0));
+            dto.setLose(NullSafe.get(competitive::getLoseCount, 0));
+            dto.setTie(NullSafe.get(competitive::getTieCount, 0));
+            dto.setKill(NullSafe.get(competitive::getKillCount, 0));
+            dto.setDeath(NullSafe.get(competitive::getDeathCount, 0));
+            dto.setAce(NullSafe.get(competitive::getAceCount, 0));
         }
 
         return dto;

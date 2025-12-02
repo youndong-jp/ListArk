@@ -3,37 +3,41 @@ package com.example.ListArk.mapper.armory;
 import com.example.ListArk.Dto.raw.armory.ArmoryDto;
 import com.example.ListArk.Dto.raw.armory.avatar.AvatarDto;
 import com.example.ListArk.Dto.tidy.armory.avatar.AvatarTidyDto;
+import com.example.ListArk.mapper.NullSafe;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class AvatarTidyMapper {
 
-    /** 통합 ArmoryDto → List<AvatarTidyDto> */
+    /**
+     * 통합 ArmoryDto → List<AvatarTidyDto>
+     */
     public List<AvatarTidyDto> toTidy(ArmoryDto raw) {
+        List<AvatarDto> avatars =
+                NullSafe.list(NullSafe.get(raw::getArmoryAvatar, null));
 
-        if (raw == null || raw.getArmoryAvatar() == null) {
-            return List.of();
-        }
-
-        return raw.getArmoryAvatar().stream()
+        return avatars.stream()
                 .map(this::convert)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    /** 개별 AvatarDto → AvatarTidyDto 변환 */
+    /**
+     * 개별 AvatarDto → AvatarTidyDto 변환
+     */
     private AvatarTidyDto convert(AvatarDto a) {
-
         AvatarTidyDto dto = new AvatarTidyDto();
 
-        dto.setType(a.getType());
-        dto.setName(a.getName());
-        dto.setIcon(a.getIcon());
-        dto.setGrade(a.getGrade());
+        dto.setType(NullSafe.get(a::getType, ""));
+        dto.setName(NullSafe.get(a::getName, ""));
+        dto.setIcon(NullSafe.get(a::getIcon, ""));
+        dto.setGrade(NullSafe.get(a::getGrade, ""));
 
-        dto.setTooltip(a.getTooltip());
+        dto.setSet(NullSafe.get(a::isSet, false));
+        dto.setInner(NullSafe.get(a::isInner, false));
+
+        dto.setTooltip(NullSafe.get(a::getTooltip, ""));
 
         return dto;
     }

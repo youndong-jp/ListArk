@@ -5,6 +5,7 @@ import com.example.ListArk.Dto.raw.armory.collectibles.CollectibleDto;
 import com.example.ListArk.Dto.raw.armory.collectibles.CollectiblePointDto;
 import com.example.ListArk.Dto.tidy.armory.collectible.CollectiblePointTidyDto;
 import com.example.ListArk.Dto.tidy.armory.collectible.CollectibleTidyDto;
+import com.example.ListArk.mapper.NullSafe;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,47 +14,45 @@ import java.util.List;
 public class CollectiblesTidyMapper {
 
     public List<CollectibleTidyDto> toTidy(ArmoryDto raw) {
+        List<CollectibleDto> collectibles =
+                NullSafe.list(NullSafe.get(raw::getCollectibles, null));
 
-        if (raw == null || raw.getCollectibles() == null) {
-            return List.of();
-        }
-
-        return raw.getCollectibles().stream()
+        return collectibles.stream()
                 .map(this::convert)
                 .toList();
     }
 
-    /** Raw -> Tidy 변환 */
+    /**
+     * Raw → Tidy 변환
+     */
     private CollectibleTidyDto convert(CollectibleDto c) {
-
         CollectibleTidyDto dto = new CollectibleTidyDto();
 
-        dto.setType(c.getType());
-        dto.setIcon(c.getIcon());
-        dto.setPoint(c.getPoint());
-        dto.setMaxPoint(c.getMaxPoint());
+        dto.setType(NullSafe.get(c::getType, ""));
+        dto.setIcon(NullSafe.get(c::getIcon, ""));
+        dto.setPoint(NullSafe.get(c::getPoint, 0));
+        dto.setMaxPoint(NullSafe.get(c::getMaxPoint, 0));
 
-        if (c.getCollectiblePoints() != null) {
-            List<CollectiblePointTidyDto> detail = c.getCollectiblePoints().stream()
-                    .map(this::convertPoint)
-                    .toList();
-
-            dto.setDetails(detail);
-        } else {
-            dto.setDetails(List.of());
-        }
+        // 세부 포인트 목록
+        List<CollectiblePointTidyDto> details =
+                NullSafe.list(c.getCollectiblePoints())
+                        .stream()
+                        .map(this::convertPoint)
+                        .toList();
+        dto.setDetails(details);
 
         return dto;
     }
 
-    /** 세부 포인트 변환 */
+    /**
+     * 세부 포인트 변환
+     */
     private CollectiblePointTidyDto convertPoint(CollectiblePointDto p) {
-
         CollectiblePointTidyDto dto = new CollectiblePointTidyDto();
 
-        dto.setName(p.getPointName());
-        dto.setPoint(p.getPoint());
-        dto.setMaxPoint(p.getMaxPoint());
+        dto.setName(NullSafe.get(p::getPointName, ""));
+        dto.setPoint(NullSafe.get(p::getPoint, 0));
+        dto.setMaxPoint(NullSafe.get(p::getMaxPoint, 0));
 
         return dto;
     }

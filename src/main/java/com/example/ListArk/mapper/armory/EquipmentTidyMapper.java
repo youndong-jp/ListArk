@@ -3,6 +3,9 @@ package com.example.ListArk.mapper.armory;
 import com.example.ListArk.Dto.raw.armory.ArmoryDto;
 import com.example.ListArk.Dto.raw.armory.equipment.EquipmentDto;
 import com.example.ListArk.Dto.tidy.armory.equipment.EquipmentTidyDto;
+import com.example.ListArk.mapper.NullSafe;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,36 +14,74 @@ import java.util.stream.Collectors;
 @Component
 public class EquipmentTidyMapper {
 
+    private final ObjectMapper objectMapper;
+
+    public EquipmentTidyMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
     public List<EquipmentTidyDto> toTidy(ArmoryDto raw) {
 
-        if (raw == null || raw.getArmoryEquipment() == null) {
-            return List.of();
-        }
+        List<EquipmentDto> equipments = NullSafe.get(
+                raw::getArmoryEquipment,
+                List.of()
+        );
 
-        return raw.getArmoryEquipment().stream()
+        return equipments.stream()
                 .map(this::convert)
                 .collect(Collectors.toList());
     }
 
-    /** 개별 장비 변환 메소드 */
     private EquipmentTidyDto convert(EquipmentDto e) {
 
         EquipmentTidyDto dto = new EquipmentTidyDto();
 
-        dto.setGrade(e.getType());
-        dto.setName(e.getName());
-        dto.setIcon(e.getIcon());
-        dto.setGrade(e.getGrade());
+        dto.setSlot(NullSafe.get(e::getType, ""));
+        dto.setName(NullSafe.get(e::getName, ""));
+        dto.setIcon(NullSafe.get(e::getIcon, ""));
+        dto.setGrade(NullSafe.get(e::getGrade, ""));
 
-        // 품질 (Quality)
-        dto.setQuality(String.valueOf(e.getGrade()));
+        String tooltip = NullSafe.get(e::getTooltip, "");
+        dto.setTooltip(tooltip);
 
-        // 아이템 레벨(ItemLevel)
-        dto.setItemLevel(e.getGrade());
+        // 🎯 JSON 1번만 파싱해서 재활용
+        JsonNode root = parseTooltip(tooltip);
 
-        // Tooltip 그대로
-        dto.setTooltip(e.getTooltip());
+        dto.setQuality(extractQuality(root));
+        dto.setItemLevel(extractItemLevel(root));
 
         return dto;
     }
+
+    /** Tooltip JSON 안전 파싱 */
+    private JsonNode parseTooltip(String tooltip) {
+        try {
+            return objectMapper.readTree(tooltip);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+        private String extractQuality(JsonNode root) {
+            if (root == null) return "0";
+
+            // path()가 이미 안전하므로 try-catch 제거
+            return root.path("Element_001")
+                    .path("value")
+                    .path("qualityValue")
+                    .asText("0");
+        }
+
+        private String extractItemLevel(JsonNode root) {
+            if (root == null) return "0";
+
+            String raw = root.path("Element_001")
+                    .path("value")
+                    .path("leftStr0")
+                    .asText("");
+
+            // 빈 문자열이면 "0" 반환
+            return raw.isEmpty() ? "0" : raw.replaceAll("[^0-9]", "");
+        }
 }
+

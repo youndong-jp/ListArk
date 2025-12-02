@@ -7,5 +7,5 @@ import java.util.List;
 public class GemTidyDto {
 
     private List<GemSimpleDto> gems;   // 보석 리스트
-    private List<String> effects;      // 보석 효과 리스트
+    private List<GemEffectTidyDto> effects;      // 보석 효과 리스트
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 public class GemSimpleDto {
 
     private int slot;
-    private String name;
+    private String type;
     private int level;
     private String grade;
     private String icon;

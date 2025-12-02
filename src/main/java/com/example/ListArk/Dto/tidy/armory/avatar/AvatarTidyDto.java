@@ -12,5 +12,5 @@ public class AvatarTidyDto {
     private boolean isSet;
     private boolean isInner;
 
-    private String Tooltip;
+    private String tooltip;
 }

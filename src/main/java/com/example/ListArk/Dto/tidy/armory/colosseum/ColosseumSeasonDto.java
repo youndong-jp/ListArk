@@ -13,6 +13,6 @@ public class ColosseumSeasonDto {
 
     private Integer kill;
     private Integer death;
-    private Integer assist;
+    private Integer ace;
 
 }
