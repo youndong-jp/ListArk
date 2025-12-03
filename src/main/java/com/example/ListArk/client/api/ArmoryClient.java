@@ -11,9 +11,11 @@ import com.example.ListArk.Dto.raw.armory.collectibles.CollectibleDto;
 import com.example.ListArk.Dto.raw.armory.colosseum.ArmoryColosseumDto;
 import com.example.ListArk.Dto.raw.armory.combatskill.CombatSkillDto;
 import com.example.ListArk.Dto.raw.armory.engraving.ArmoryEngravingDto;
+import com.example.ListArk.Dto.raw.armory.equipment.EquipmentDto;
 import com.example.ListArk.Dto.raw.armory.gem.ArmoryGemDto;
 import com.example.ListArk.Dto.raw.armory.profile.ArmoryProfileDto;
 import com.example.ListArk.Dto.raw.armory.profile.StatDto;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -39,12 +41,11 @@ public class ArmoryClient {
                 .bodyToMono(ArmoryProfileDto.class);
     }
 
-    public Mono<List<StatDto>> getCharacterStats(String name) {
+    public Mono<EquipmentDto> getCharacterEquipment(String name) {
         return webClient.get()
-                .uri("/armories/characters/{name}/stats", name)
+                .uri("/armories/characters/{name}/equipments", name)
                 .retrieve()
-                .bodyToFlux(StatDto.class)
-                .collectList();
+                .bodyToMono(EquipmentDto.class);
     }
 
     public Mono<ArmoryEngravingDto> getCharacterEngravings(String name) {

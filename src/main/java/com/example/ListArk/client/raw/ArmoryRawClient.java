@@ -27,17 +27,17 @@ public class ArmoryRawClient {
                 .bodyToMono(String.class);
     }
 
-
-    public Mono<String> getRawCharacterGems(String name) {
+    public Mono<String> getRawCharacterEquipment(String name) {
         return webClient.get()
-                .uri("/armories/characters/{name}/gems", name)
+                .uri("/armories/characters/{name}/equipment", name)
                 .retrieve()
                 .bodyToMono(String.class);
     }
 
-    public Mono<String> getRawCharacterStats(String name) {
+
+    public Mono<String> getRawCharacterGems(String name) {
         return webClient.get()
-                .uri("/armories/characters/{name}/stats", name)
+                .uri("/armories/characters/{name}/gems", name)
                 .retrieve()
                 .bodyToMono(String.class);
     }

@@ -21,15 +21,14 @@ public class ArmoryRawController {
     public String getRawProfile(@PathVariable String name) {
         return armoryRawClient.getRawCharacterProfile(name).block();
     }
+    @GetMapping("/{name}/equipment")
+    public String getRawEquipment(@PathVariable String name) {
+        return armoryRawClient.getRawCharacterEquipment(name).block();
+    }
 
     @GetMapping("/{name}/gems")
     public String getRawGems(@PathVariable String name) {
         return armoryRawClient.getRawCharacterGems(name).block();
-    }
-
-    @GetMapping("/{name}/stats")
-    public String getRawStats(@PathVariable String name) {
-        return armoryRawClient.getRawCharacterStats(name).block();
     }
 
     @GetMapping("/{name}/engravings")
