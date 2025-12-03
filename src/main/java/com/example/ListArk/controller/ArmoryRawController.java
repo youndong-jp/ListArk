@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/raw/characters")
 @RequiredArgsConstructor
-public class ApiArmoryRawController {
+public class ArmoryRawController {
 
     private final ArmoryRawClient armoryRawClient;
     @GetMapping("/{name}/armory")

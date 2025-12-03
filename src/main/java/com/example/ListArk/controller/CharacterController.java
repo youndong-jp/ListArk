@@ -3,7 +3,7 @@ package com.example.ListArk.controller;
 import com.example.ListArk.Dto.raw.character.SiblingCharacterDto;
 import com.example.ListArk.Dto.raw.armory.ArmoryDto;
 import com.example.ListArk.Dto.raw.armory.colosseum.ArmoryColosseumDto;
-import com.example.ListArk.common.ApiResponse;
+import com.example.ListArk.Dto.common.ApiResponse;
 import com.example.ListArk.client.api.ArmoryClient;
 import com.example.ListArk.client.api.CharacterClient;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/characters")
 @RequiredArgsConstructor
-public class ApiCharacterController {
+public class CharacterController {
 
     private final CharacterClient characterClient;
     private final ArmoryClient apiClientService;

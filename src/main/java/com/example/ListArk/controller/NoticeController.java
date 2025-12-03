@@ -2,7 +2,7 @@ package com.example.ListArk.controller;
 
 import com.example.ListArk.Dto.raw.notice.NoticeDto;
 import com.example.ListArk.Dto.raw.notice.NoticeViewDto;
-import com.example.ListArk.common.ApiResponse;
+import com.example.ListArk.Dto.common.ApiResponse;
 import com.example.ListArk.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/notice")
 @RequiredArgsConstructor
-public class ApiNoticeController {
+public class NoticeController {
 
     private final NoticeService noticeService;
 
