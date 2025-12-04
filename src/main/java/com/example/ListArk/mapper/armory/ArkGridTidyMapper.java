@@ -58,7 +58,7 @@ public class ArkGridTidyMapper {
     private ArkGridSlotTidyDto convertSlot(ArkGridSlotDto s) {
         ArkGridSlotTidyDto dto = new ArkGridSlotTidyDto();
 
-        dto.setIndex(NullSafe.get(s::getIndex, 0));
+        dto.setSlot(NullSafe.get(s::getIndex, 0));
         dto.setIcon(NullSafe.get(s::getIcon, ""));
         dto.setName(NullSafe.get(s::getName, ""));
         dto.setPoint(NullSafe.get(s::getPoint, 0));
@@ -82,7 +82,7 @@ public class ArkGridTidyMapper {
     private ArkGridGemTidyDto convertGem(ArkGridGemDto g) {
         ArkGridGemTidyDto dto = new ArkGridGemTidyDto();
 
-        dto.setIndex(NullSafe.get(g::getIndex, 0));
+        dto.setSlot(NullSafe.get(g::getIndex, 0));
         dto.setIcon(NullSafe.get(g::getIcon, ""));
         dto.setActive(NullSafe.get(g::isActive, false));
         dto.setGrade(NullSafe.get(g::getGrade, ""));

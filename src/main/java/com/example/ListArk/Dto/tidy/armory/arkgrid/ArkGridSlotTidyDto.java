@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class ArkGridSlotTidyDto {
 
-    private int index;
+    private int slot;
     private String icon;
     private String name;
     private int point;
