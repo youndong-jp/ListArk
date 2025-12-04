@@ -3,6 +3,7 @@ package com.example.ListArk.mapper.armory;
 import com.example.ListArk.Dto.raw.armory.ArmoryDto;
 import com.example.ListArk.Dto.raw.armory.profile.ArmoryProfileDto;
 import com.example.ListArk.Dto.raw.armory.profile.StatDto;
+import com.example.ListArk.Dto.raw.armory.profile.TendencyDto;
 import com.example.ListArk.Dto.tidy.armory.profile.ProfileTidyDto;
 import com.example.ListArk.mapper.NullSafe;
 import org.springframework.stereotype.Component;
@@ -15,15 +16,10 @@ import java.util.Set;
 @Component
 public class ProfileTidyMapper {
 
-    // 상수로 분리 - 유지보수성 향상
     private static final Set<String> COMBAT_STATS =
             Set.of("치명", "특화", "신속", "제압", "인내", "숙련");
 
-    private static final Set<String> TENDENCY_STATS =
-            Set.of("지성", "담력", "매력", "친절");
-
     public ProfileTidyDto toTidy(ArmoryDto raw) {
-
         ArmoryProfileDto p = NullSafe.get(raw::getArmoryProfile);
         if (p == null) {
             return new ProfileTidyDto();
@@ -31,6 +27,7 @@ public class ProfileTidyMapper {
 
         ProfileTidyDto dto = new ProfileTidyDto();
 
+        // 기본 정보
         dto.setCharacterName(NullSafe.get(p::getCharacterName, ""));
         dto.setCharacterClass(NullSafe.get(p::getCharacterClassName, ""));
         dto.setCharacterLevel(NullSafe.get(p::getCharacterLevel, 0));
@@ -41,27 +38,47 @@ public class ProfileTidyMapper {
         dto.setPvpGrade(NullSafe.get(p::getPvpGradeName, ""));
         dto.setCharacterImage(NullSafe.get(p::getCharacterImage, ""));
 
-        List<StatDto> stats = NullSafe.get(p::getStats, List.of());
+        // 전투 특성 & 성향
+        dto.setStats(
+                extractCombatStats(NullSafe.get(p::getStats, List.of()))
+        );
+        dto.setTendencies(
+                extractTendencyStats(NullSafe.get(p::getTendencies, List.of()))
+        );
+
+        return dto;
+    }
+
+    /**
+     * Stats 배열에서 전투 특성만 추출
+     */
+    private Map<String, Integer> extractCombatStats(List<StatDto> stats) {
         Map<String, Integer> combatStats = new HashMap<>();
-        Map<String, Integer> tendencyStats = new HashMap<>();
 
         for (StatDto stat : stats) {
             String type = stat.getType();
-            if (type == null) continue;
-
-            int value = safeInt(stat.getValue());
-
-            if (COMBAT_STATS.contains(type)) {
-                combatStats.put(type, value);
-            } else if (TENDENCY_STATS.contains(type)) {
-                tendencyStats.put(type, value);
+            if (type != null && COMBAT_STATS.contains(type)) {
+                combatStats.put(type, safeInt(stat.getValue()));
             }
         }
 
-        dto.setStats(combatStats);
-        dto.setTendencies(tendencyStats);
+        return combatStats;
+    }
 
-        return dto;
+    /**
+     * Tendencies 배열에서 성향 특성 추출
+     */
+    private Map<String, Integer> extractTendencyStats(List<TendencyDto> tendencies) {
+        Map<String, Integer> tendencyMap = new HashMap<>();
+
+        for (TendencyDto tendency : tendencies) {
+            String type = tendency.getType();
+            if (type != null) {
+                tendencyMap.put(type, NullSafe.get(tendency::getPoint, 0));
+            }
+        }
+
+        return tendencyMap;
     }
 
     private int safeInt(String value) {
