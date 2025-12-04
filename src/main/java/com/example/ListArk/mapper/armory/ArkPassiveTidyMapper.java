@@ -19,7 +19,7 @@ public class ArkPassiveTidyMapper {
         ArmoryArkPassiveDto source = NullSafe.get(raw::getArkPassive, null);
 
         if (source == null) {
-            return empty();
+            return new ArkPassiveTidyDto();
         }
 
         ArkPassiveTidyDto dto = new ArkPassiveTidyDto();
@@ -42,17 +42,6 @@ public class ArkPassiveTidyMapper {
                         .toList();
         dto.setEffects(effects);
 
-        return dto;
-    }
-
-    /**
-     * Null 대응용 빈 객체
-     */
-    private ArkPassiveTidyDto empty() {
-        ArkPassiveTidyDto dto = new ArkPassiveTidyDto();
-        dto.setActive(false);
-        dto.setPoints(List.of());
-        dto.setEffects(List.of());
         return dto;
     }
 
