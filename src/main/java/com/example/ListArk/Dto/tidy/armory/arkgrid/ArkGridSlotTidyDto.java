@@ -12,8 +12,10 @@ public class ArkGridSlotTidyDto {
     private String name;
     private int point;
     private String grade;
-    private String tooltip;
 
-    private List<ArkGridGemTidyDto> gems; // 슬롯 안의 보석들
+    private String coreType;
+    private int willpower;
+    private List<CoreOptionDto> options;
+    private List<ArkGridGemTidyDto> gems;
 }
 

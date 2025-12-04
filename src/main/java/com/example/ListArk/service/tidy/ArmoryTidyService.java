@@ -17,6 +17,7 @@ import com.example.ListArk.Dto.tidy.armory.profile.ProfileTidyDto;
 import com.example.ListArk.client.api.ArmoryClient;
 import com.example.ListArk.mapper.armory.*;
 
+import com.example.ListArk.mapper.armory.arkgrid.ArkGridTidyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

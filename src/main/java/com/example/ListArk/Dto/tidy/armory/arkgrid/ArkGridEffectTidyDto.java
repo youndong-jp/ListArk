@@ -7,7 +7,6 @@ public class ArkGridEffectTidyDto {
 
     private String name;
     private int level;
-    private String tooltip;
 }
 
 
