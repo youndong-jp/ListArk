@@ -7,6 +7,8 @@ public class ColosseumSeasonDto {
 
     private String seasonName;
 
+    private String rankName;
+    private String rankIcon;
     private Integer win;
     private Integer lose;
     private Integer tie;

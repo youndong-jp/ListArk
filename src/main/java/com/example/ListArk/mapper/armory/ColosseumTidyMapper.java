@@ -46,6 +46,8 @@ public class ColosseumTidyMapper {
         CompetitiveDto competitive = NullSafe.get(entry::getCompetitive, null);
 
         if (competitive != null) {
+            dto.setRankName(NullSafe.get(competitive::getRankName,""));
+            dto.setRankIcon(NullSafe.get(competitive::getRankIcon,""));
             dto.setWin(NullSafe.get(competitive::getVictoryCount, 0));
             dto.setLose(NullSafe.get(competitive::getLoseCount, 0));
             dto.setTie(NullSafe.get(competitive::getTieCount, 0));
