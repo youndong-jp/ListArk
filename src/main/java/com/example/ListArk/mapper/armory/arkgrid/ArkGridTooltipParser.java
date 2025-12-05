@@ -3,6 +3,8 @@ package com.example.ListArk.mapper.armory.arkgrid;
 import com.example.ListArk.Dto.tidy.armory.arkgrid.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -10,19 +12,30 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 아크 그리드 Tooltip JSON을 파싱하여 TidyDto로 변환하는 파서
+ *
+ * 지원 타입:
+ * - Slot (코어): 코어 타입, 의지력, 코어 옵션
+ * - Gem (젬): 젬 타입, 포인트, 효과
+ */
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class ArkGridTooltipParser {
 
     private final ObjectMapper objectMapper;
-
-    public ArkGridTooltipParser(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
 
     // ============================================
     // 1. Slot Tooltip 파싱
     // ============================================
 
+    /**
+     * 슬롯(코어) Tooltip 파싱
+     *
+     * @param tooltip Tooltip JSON 문자열
+     * @param dto 파싱 결과를 저장할 DTO
+     */
     public void parseSlotTooltip(String tooltip, ArkGridSlotTidyDto dto) {
         if (tooltip == null || tooltip.isBlank()) {
             dto.setOptions(List.of());
@@ -32,64 +45,45 @@ public class ArkGridTooltipParser {
         try {
             JsonNode root = objectMapper.readTree(tooltip);
 
-            // Element 번호가 다를 수 있으므로 텍스트로 찾기
-            parseCoreTypeByText(root, dto);
-            parseWillpowerByText(root, dto);
-            parseCoreOptionsByText(root, dto);
+            // 모든 Element를 한 번만 순회하며 파싱
+            root.fields().forEachRemaining(entry -> {
+                JsonNode element = entry.getValue();
+
+                // type이 없거나 ItemPartBox가 아니면 스킵
+                if (!element.has("type")) return;
+                if (!element.path("type").asText().equals("ItemPartBox")) return;
+
+                String title = stripHtmlTags(element.path("value").path("Element_000").asText());
+
+                // 제목으로 구분하여 파싱
+                if (title.contains("코어 타입")) {
+                    parseCoreType(element, dto);
+                } else if (title.contains("코어 공급 의지력")) {
+                    parseWillpower(element, dto);
+                } else if (title.contains("코어 옵션")) {
+                    parseCoreOptions(element, dto);
+                }
+            });
 
         } catch (Exception e) {
+            log.error("슬롯 tooltip 파싱 중 에러 발생: {}", e.getMessage(), e);
             dto.setOptions(List.of());
         }
     }
 
-    private void parseCoreTypeByText(JsonNode root, ArkGridSlotTidyDto dto) {
-        for (int i = 0; i <= 12; i++) {
-            JsonNode element = root.path("Element_" + String.format("%03d", i));
-            if (element.has("value")) {
-                String title = element.path("value").path("Element_000").asText();
-                if (title.contains("코어 타입")) {
-                    parseCoreType(element, dto);
-                    return;
-                }
-            }
-        }
-    }
-
-    private void parseWillpowerByText(JsonNode root, ArkGridSlotTidyDto dto) {
-        for (int i = 0; i <= 12; i++) {
-            JsonNode element = root.path("Element_" + String.format("%03d", i));
-            if (element.has("value")) {
-                String title = element.path("value").path("Element_000").asText();
-                if (title.contains("코어 공급 의지력")) {
-                    parseWillpower(element, dto);
-                    return;
-                }
-            }
-        }
-    }
-
-    private void parseCoreOptionsByText(JsonNode root, ArkGridSlotTidyDto dto) {
-        for (int i = 0; i <= 12; i++) {
-            JsonNode element = root.path("Element_" + String.format("%03d", i));
-            if (element.has("value")) {
-                String title = element.path("value").path("Element_000").asText();
-                if (title.contains("코어 옵션")) {
-                    parseCoreOptions(element, dto);
-                    return;
-                }
-            }
-        }
-        dto.setOptions(List.of());
-    }
-
+    /**
+     * 코어 타입 파싱 (예: "질서 - 해")
+     */
     private void parseCoreType(JsonNode element, ArkGridSlotTidyDto dto) {
         String text = element.path("value").path("Element_001").asText();
         if (!text.isBlank()) {
-            String coreType = text.replaceAll("<[^>]*>", "").trim();
-            dto.setCoreType(coreType);
+            dto.setCoreType(stripHtmlTags(text));
         }
     }
 
+    /**
+     * 의지력 파싱 (예: "15 포인트")
+     */
     private void parseWillpower(JsonNode element, ArkGridSlotTidyDto dto) {
         String html = element.path("value").path("Element_001").asText();
         if (html.isBlank()) return;
@@ -101,6 +95,10 @@ public class ArkGridTooltipParser {
         }
     }
 
+    /**
+     * 코어 옵션 목록 파싱
+     * [10P] 피해 증가, [14P] 특수 효과 등
+     */
     private void parseCoreOptions(JsonNode element, ArkGridSlotTidyDto dto) {
         String html = element.path("value").path("Element_001").asText();
 
@@ -111,13 +109,11 @@ public class ArkGridTooltipParser {
 
         List<CoreOptionDto> options = new ArrayList<>();
 
-        // 1. <br> → 줄바꿈으로 변경
+        // <BR> 태그를 줄바꿈으로 변환
         html = html.replaceAll("(?i)<br>", "\n");
+        String cleanText = stripHtmlTags(html);
 
-        // 2. 모든 HTML 태그 제거
-        String cleanText = html.replaceAll("<[^>]*>", "");
-
-        // 3. [NP] 패턴으로 파싱
+        // [NP] 패턴으로 파싱
         Pattern pointPattern = Pattern.compile("\\[(\\d+)P\\]([^\n\\[]+)");
         Matcher matcher = pointPattern.matcher(cleanText);
 
@@ -136,6 +132,9 @@ public class ArkGridTooltipParser {
         dto.setOptions(options);
     }
 
+    /**
+     * 옵션 타입 및 수치 파싱
+     */
     private void parseOptionTypeAndValue(String description, CoreOptionDto option) {
         // 피해 증가
         Pattern damagePattern = Pattern.compile("피해.*?([0-9.]+)%\\s*증가");
@@ -164,6 +163,12 @@ public class ArkGridTooltipParser {
     // 2. Gem Tooltip 파싱
     // ============================================
 
+    /**
+     * 젬 Tooltip 파싱
+     *
+     * @param tooltip Tooltip JSON 문자열
+     * @param dto 파싱 결과를 저장할 DTO
+     */
     public void parseGemTooltip(String tooltip, ArkGridGemTidyDto dto) {
         if (tooltip == null || tooltip.isBlank()) {
             dto.setEffects(List.of());
@@ -173,23 +178,55 @@ public class ArkGridTooltipParser {
         try {
             JsonNode root = objectMapper.readTree(tooltip);
 
-            parseGemName(root.path("Element_000"), dto);
-            parseGemBasicInfo(root.path("Element_004"), dto);
-            parseGemEffects(root.path("Element_005"), dto);
+            // 모든 Element를 순회하며 파싱
+            root.fields().forEachRemaining(entry -> {
+                JsonNode element = entry.getValue();
+
+                if (!element.has("type")) return;
+                String type = element.path("type").asText();
+
+                switch (type) {
+                    case "NameTagBox":
+                        parseGemName(element, dto);
+                        break;
+                    case "ItemPartBox":
+                        parseGemItemPartBox(element, dto);
+                        break;
+                }
+            });
 
         } catch (Exception e) {
+            log.error("젬 tooltip 파싱 중 에러 발생: {}", e.getMessage(), e);
             dto.setEffects(List.of());
         }
     }
 
+    /**
+     * 젬 이름 파싱
+     */
     private void parseGemName(JsonNode element, ArkGridGemTidyDto dto) {
         String html = element.path("value").asText();
         if (!html.isBlank()) {
-            String name = html.replaceAll("<[^>]*>", "").trim();
-            dto.setName(name);
+            dto.setName(stripHtmlTags(html));
         }
     }
 
+    /**
+     * 젬 ItemPartBox 파싱 (기본 정보 또는 효과)
+     */
+    private void parseGemItemPartBox(JsonNode element, ArkGridGemTidyDto dto) {
+        String title = stripHtmlTags(element.path("value").path("Element_000").asText());
+
+        if (title.contains("젬 기본 정보")) {
+            parseGemBasicInfo(element, dto);
+        } else if (title.contains("젬 효과")) {
+            parseGemEffects(element, dto);
+        }
+    }
+
+    /**
+     * 젬 기본 정보 파싱 (타입, 포인트)
+     */
     private void parseGemBasicInfo(JsonNode element, ArkGridGemTidyDto dto) {
         String text = element.path("value").path("Element_001").asText();
         if (text.isBlank()) return;
@@ -209,6 +246,9 @@ public class ArkGridTooltipParser {
         }
     }
 
+    /**
+     * 젬 효과 파싱
+     */
     private void parseGemEffects(JsonNode element, ArkGridGemTidyDto dto) {
         String html = element.path("value").path("Element_001").asText();
 
@@ -236,11 +276,13 @@ public class ArkGridTooltipParser {
         dto.setEffects(effects);
     }
 
+    /**
+     * 젬 효과 목록 파싱
+     * [효과명] Lv.N +수치% 형태
+     */
     private List<GemEffectDto> parseGemEffectList(String html) {
         List<GemEffectDto> effects = new ArrayList<>();
 
-        // [효과명] Lv.N ... +수치% 패턴
-        // <br> 다음에 <img> 태그가 있을 수 있음
         Pattern pattern = Pattern.compile(
                 "\\[([^\\]]+)\\]\\s*<FONT[^>]*>Lv\\.(\\d+)</FONT>.*?\\+([0-9.]+)%"
         );
@@ -261,5 +303,24 @@ public class ArkGridTooltipParser {
         }
 
         return effects;
+    }
+
+    // ========================================
+    // 유틸리티: HTML 태그 제거
+    // ========================================
+
+    /**
+     * HTML 태그 및 특수 문자 제거
+     *
+     * @param html HTML이 포함된 문자열
+     * @return 순수 텍스트
+     */
+    private String stripHtmlTags(String html) {
+        if (html == null) return null;
+
+        return html
+                .replaceAll("<[^>]*>", "")           // HTML 태그 제거
+                .replace("&nbsp;", " ")               // 공백 문자 변환
+                .trim();
     }
 }
