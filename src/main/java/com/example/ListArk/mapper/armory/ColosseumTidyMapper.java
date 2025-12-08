@@ -1,11 +1,11 @@
 package com.example.ListArk.mapper.armory;
 
-import com.example.ListArk.Dto.raw.armory.ArmoryDto;
-import com.example.ListArk.Dto.raw.armory.colosseum.ArmoryColosseumDto;
-import com.example.ListArk.Dto.raw.armory.colosseum.ColosseumEntryDto;
-import com.example.ListArk.Dto.raw.armory.colosseum.CompetitiveDto;
-import com.example.ListArk.Dto.tidy.armory.colosseum.ColosseumSeasonDto;
-import com.example.ListArk.Dto.tidy.armory.colosseum.ColosseumTidyDto;
+import com.example.ListArk.dto.raw.armory.ArmoryDto;
+import com.example.ListArk.dto.raw.armory.colosseum.ArmoryColosseumDto;
+import com.example.ListArk.dto.raw.armory.colosseum.ColosseumEntryDto;
+import com.example.ListArk.dto.raw.armory.colosseum.CompetitiveDto;
+import com.example.ListArk.dto.tidy.armory.colosseum.ColosseumSeasonDto;
+import com.example.ListArk.dto.tidy.armory.colosseum.ColosseumTidyDto;
 import com.example.ListArk.mapper.NullSafe;
 import org.springframework.stereotype.Component;
 

@@ -1,13 +1,13 @@
 package com.example.ListArk.mapper.armory;
 
-import com.example.ListArk.Dto.raw.armory.ArmoryDto;
-import com.example.ListArk.Dto.raw.armory.gem.ArmoryGemDto;
-import com.example.ListArk.Dto.raw.armory.gem.GemDto;
-import com.example.ListArk.Dto.raw.armory.gem.GemEffectDto;
-import com.example.ListArk.Dto.raw.armory.gem.GemEffectSkillDto;
-import com.example.ListArk.Dto.tidy.armory.gem.GemEffectTidyDto;
-import com.example.ListArk.Dto.tidy.armory.gem.GemSimpleDto;
-import com.example.ListArk.Dto.tidy.armory.gem.GemTidyDto;
+import com.example.ListArk.dto.raw.armory.ArmoryDto;
+import com.example.ListArk.dto.raw.armory.gem.ArmoryGemDto;
+import com.example.ListArk.dto.raw.armory.gem.GemDto;
+import com.example.ListArk.dto.raw.armory.gem.GemEffectDto;
+import com.example.ListArk.dto.raw.armory.gem.GemEffectSkillDto;
+import com.example.ListArk.dto.tidy.armory.gem.GemEffectTidyDto;
+import com.example.ListArk.dto.tidy.armory.gem.GemSimpleDto;
+import com.example.ListArk.dto.tidy.armory.gem.GemTidyDto;
 import com.example.ListArk.mapper.NullSafe;
 import org.springframework.stereotype.Component;
 

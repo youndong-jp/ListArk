@@ -1,18 +1,18 @@
 package com.example.ListArk.service.tidy;
 
-import com.example.ListArk.Dto.raw.armory.ArmoryDto;
-import com.example.ListArk.Dto.tidy.armory.ArmoryTidyDto;
-import com.example.ListArk.Dto.tidy.armory.arkgrid.ArkGridTidyDto;
-import com.example.ListArk.Dto.tidy.armory.arkpassive.ArkPassiveTidyDto;
-import com.example.ListArk.Dto.tidy.armory.avatar.AvatarTidyDto;
-import com.example.ListArk.Dto.tidy.armory.card.CardTidyDto;
-import com.example.ListArk.Dto.tidy.armory.collectible.CollectibleTidyDto;
-import com.example.ListArk.Dto.tidy.armory.colosseum.ColosseumTidyDto;
-import com.example.ListArk.Dto.tidy.armory.combatskill.CombatSkillTidyDto;
-import com.example.ListArk.Dto.tidy.armory.engraving.EngravingTidyDto;
-import com.example.ListArk.Dto.tidy.armory.equipment.EquipmentTidyDto;
-import com.example.ListArk.Dto.tidy.armory.gem.GemTidyDto;
-import com.example.ListArk.Dto.tidy.armory.profile.ProfileTidyDto;
+import com.example.ListArk.dto.raw.armory.ArmoryDto;
+import com.example.ListArk.dto.tidy.armory.ArmoryTidyDto;
+import com.example.ListArk.dto.tidy.armory.arkgrid.ArkGridTidyDto;
+import com.example.ListArk.dto.tidy.armory.arkpassive.ArkPassiveTidyDto;
+import com.example.ListArk.dto.tidy.armory.avatar.AvatarTidyDto;
+import com.example.ListArk.dto.tidy.armory.card.CardTidyDto;
+import com.example.ListArk.dto.tidy.armory.collectible.CollectibleTidyDto;
+import com.example.ListArk.dto.tidy.armory.colosseum.ColosseumTidyDto;
+import com.example.ListArk.dto.tidy.armory.combatskill.CombatSkillTidyDto;
+import com.example.ListArk.dto.tidy.armory.engraving.EngravingTidyDto;
+import com.example.ListArk.dto.tidy.armory.equipment.EquipmentTidyDto;
+import com.example.ListArk.dto.tidy.armory.gem.GemTidyDto;
+import com.example.ListArk.dto.tidy.armory.profile.ProfileTidyDto;
 
 import com.example.ListArk.client.api.ArmoryClient;
 import com.example.ListArk.mapper.armory.*;

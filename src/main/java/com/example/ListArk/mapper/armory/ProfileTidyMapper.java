@@ -1,10 +1,10 @@
 package com.example.ListArk.mapper.armory;
 
-import com.example.ListArk.Dto.raw.armory.ArmoryDto;
-import com.example.ListArk.Dto.raw.armory.profile.ArmoryProfileDto;
-import com.example.ListArk.Dto.raw.armory.profile.StatDto;
-import com.example.ListArk.Dto.raw.armory.profile.TendencyDto;
-import com.example.ListArk.Dto.tidy.armory.profile.ProfileTidyDto;
+import com.example.ListArk.dto.raw.armory.ArmoryDto;
+import com.example.ListArk.dto.raw.armory.profile.ArmoryProfileDto;
+import com.example.ListArk.dto.raw.armory.profile.StatDto;
+import com.example.ListArk.dto.raw.armory.profile.TendencyDto;
+import com.example.ListArk.dto.tidy.armory.profile.ProfileTidyDto;
 import com.example.ListArk.mapper.NullSafe;
 import org.springframework.stereotype.Component;
 

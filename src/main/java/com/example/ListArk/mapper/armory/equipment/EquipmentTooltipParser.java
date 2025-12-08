@@ -1,6 +1,6 @@
 package com.example.ListArk.mapper.armory.equipment;
 
-import com.example.ListArk.Dto.tidy.armory.equipment.*;
+import com.example.ListArk.dto.tidy.armory.equipment.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

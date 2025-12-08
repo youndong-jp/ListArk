@@ -1,6 +1,6 @@
 package com.example.ListArk.mapper.armory.arkgrid;
 
-import com.example.ListArk.Dto.tidy.armory.arkgrid.*;
+import com.example.ListArk.dto.tidy.armory.arkgrid.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

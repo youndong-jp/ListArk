@@ -1,11 +1,11 @@
 package com.example.ListArk.mapper.armory;
 
-import com.example.ListArk.Dto.raw.armory.ArmoryDto;
-import com.example.ListArk.Dto.raw.armory.combatskill.CombatSkillDto;
-import com.example.ListArk.Dto.raw.armory.combatskill.RuneDto;
-import com.example.ListArk.Dto.raw.armory.combatskill.TripodDto;
-import com.example.ListArk.Dto.tidy.armory.combatskill.CombatSkillTidyDto;
-import com.example.ListArk.Dto.tidy.armory.combatskill.TripodTidyDto;
+import com.example.ListArk.dto.raw.armory.ArmoryDto;
+import com.example.ListArk.dto.raw.armory.combatskill.CombatSkillDto;
+import com.example.ListArk.dto.raw.armory.combatskill.RuneDto;
+import com.example.ListArk.dto.raw.armory.combatskill.TripodDto;
+import com.example.ListArk.dto.tidy.armory.combatskill.CombatSkillTidyDto;
+import com.example.ListArk.dto.tidy.armory.combatskill.TripodTidyDto;
 import com.example.ListArk.mapper.NullSafe;
 import org.springframework.stereotype.Component;
 

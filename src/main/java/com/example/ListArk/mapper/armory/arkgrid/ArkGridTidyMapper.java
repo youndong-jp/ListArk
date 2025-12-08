@@ -1,13 +1,12 @@
 package com.example.ListArk.mapper.armory.arkgrid;
 
-import com.example.ListArk.Dto.raw.armory.ArmoryDto;
-import com.example.ListArk.Dto.raw.armory.arkgrid.ArmoryArkGridDto;
-import com.example.ListArk.Dto.raw.armory.arkgrid.ArkGridEffectDto;
-import com.example.ListArk.Dto.raw.armory.arkgrid.ArkGridGemDto;
-import com.example.ListArk.Dto.raw.armory.arkgrid.ArkGridSlotDto;
-import com.example.ListArk.Dto.tidy.armory.arkgrid.*;
+import com.example.ListArk.dto.raw.armory.ArmoryDto;
+import com.example.ListArk.dto.raw.armory.arkgrid.ArmoryArkGridDto;
+import com.example.ListArk.dto.raw.armory.arkgrid.ArkGridEffectDto;
+import com.example.ListArk.dto.raw.armory.arkgrid.ArkGridGemDto;
+import com.example.ListArk.dto.raw.armory.arkgrid.ArkGridSlotDto;
+import com.example.ListArk.dto.tidy.armory.arkgrid.*;
 import com.example.ListArk.mapper.NullSafe;
-import com.example.ListArk.mapper.armory.arkgrid.ArkGridTooltipParser;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -1,9 +1,9 @@
 package com.example.ListArk.mapper.armory;
 
-import com.example.ListArk.Dto.raw.armory.ArmoryDto;
-import com.example.ListArk.Dto.raw.armory.engraving.ArkPassiveEffectDto;
-import com.example.ListArk.Dto.raw.armory.engraving.ArmoryEngravingDto;
-import com.example.ListArk.Dto.tidy.armory.engraving.EngravingTidyDto;
+import com.example.ListArk.dto.raw.armory.ArmoryDto;
+import com.example.ListArk.dto.raw.armory.engraving.ArkPassiveEffectDto;
+import com.example.ListArk.dto.raw.armory.engraving.ArmoryEngravingDto;
+import com.example.ListArk.dto.tidy.armory.engraving.EngravingTidyDto;
 import com.example.ListArk.mapper.NullSafe;
 import org.springframework.stereotype.Component;
 

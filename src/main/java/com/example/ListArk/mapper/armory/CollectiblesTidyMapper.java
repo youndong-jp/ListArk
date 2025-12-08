@@ -1,10 +1,10 @@
 package com.example.ListArk.mapper.armory;
 
-import com.example.ListArk.Dto.raw.armory.ArmoryDto;
-import com.example.ListArk.Dto.raw.armory.collectibles.CollectibleDto;
-import com.example.ListArk.Dto.raw.armory.collectibles.CollectiblePointDto;
-import com.example.ListArk.Dto.tidy.armory.collectible.CollectiblePointTidyDto;
-import com.example.ListArk.Dto.tidy.armory.collectible.CollectibleTidyDto;
+import com.example.ListArk.dto.raw.armory.ArmoryDto;
+import com.example.ListArk.dto.raw.armory.collectibles.CollectibleDto;
+import com.example.ListArk.dto.raw.armory.collectibles.CollectiblePointDto;
+import com.example.ListArk.dto.tidy.armory.collectible.CollectiblePointTidyDto;
+import com.example.ListArk.dto.tidy.armory.collectible.CollectibleTidyDto;
 import com.example.ListArk.mapper.NullSafe;
 import org.springframework.stereotype.Component;
 

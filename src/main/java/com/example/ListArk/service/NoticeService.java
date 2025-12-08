@@ -1,8 +1,8 @@
 package com.example.ListArk.service;
 
 
-import com.example.ListArk.Dto.raw.notice.NoticeDto;
-import com.example.ListArk.Dto.raw.notice.NoticeViewDto;
+import com.example.ListArk.dto.raw.notice.NoticeDto;
+import com.example.ListArk.dto.raw.notice.NoticeViewDto;
 import com.example.ListArk.client.api.NoticeClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

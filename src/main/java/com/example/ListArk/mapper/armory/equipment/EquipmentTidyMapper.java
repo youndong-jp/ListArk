@@ -1,8 +1,8 @@
 package com.example.ListArk.mapper.armory.equipment;
 
-import com.example.ListArk.Dto.raw.armory.ArmoryDto;
-import com.example.ListArk.Dto.raw.armory.equipment.EquipmentDto;
-import com.example.ListArk.Dto.tidy.armory.equipment.EquipmentTidyDto;
+import com.example.ListArk.dto.raw.armory.ArmoryDto;
+import com.example.ListArk.dto.raw.armory.equipment.EquipmentDto;
+import com.example.ListArk.dto.tidy.armory.equipment.EquipmentTidyDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

@@ -1,9 +1,9 @@
 package com.example.ListArk.controller;
 
-import com.example.ListArk.Dto.raw.character.SiblingCharacterDto;
-import com.example.ListArk.Dto.raw.armory.ArmoryDto;
-import com.example.ListArk.Dto.raw.armory.colosseum.ArmoryColosseumDto;
-import com.example.ListArk.Dto.common.ApiResponse;
+import com.example.ListArk.dto.raw.character.SiblingCharacterDto;
+import com.example.ListArk.dto.raw.armory.ArmoryDto;
+import com.example.ListArk.dto.raw.armory.colosseum.ArmoryColosseumDto;
+import com.example.ListArk.dto.common.ApiResponse;
 import com.example.ListArk.client.api.ArmoryClient;
 import com.example.ListArk.client.api.CharacterClient;
 import lombok.RequiredArgsConstructor;

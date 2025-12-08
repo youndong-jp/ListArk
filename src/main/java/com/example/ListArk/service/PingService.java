@@ -1,6 +1,6 @@
 package com.example.ListArk.service;
 
-import com.example.ListArk.Dto.ping.PingResponseDto;
+import com.example.ListArk.dto.ping.PingResponseDto;
 import org.springframework.stereotype.Service;
 
 @Service

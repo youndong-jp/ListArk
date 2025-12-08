@@ -1,8 +1,8 @@
 package com.example.ListArk.mapper.armory.avatar;
 
-import com.example.ListArk.Dto.raw.armory.ArmoryDto;
-import com.example.ListArk.Dto.raw.armory.avatar.AvatarDto;
-import com.example.ListArk.Dto.tidy.armory.avatar.AvatarTidyDto;
+import com.example.ListArk.dto.raw.armory.ArmoryDto;
+import com.example.ListArk.dto.raw.armory.avatar.AvatarDto;
+import com.example.ListArk.dto.tidy.armory.avatar.AvatarTidyDto;
 import com.example.ListArk.mapper.NullSafe;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

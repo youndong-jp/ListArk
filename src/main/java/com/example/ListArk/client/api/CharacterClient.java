@@ -1,6 +1,8 @@
 package com.example.ListArk.client.api;
 
-import com.example.ListArk.Dto.raw.character.SiblingCharacterDto;
+import com.example.ListArk.client.util.WebClientHelper;
+import com.example.ListArk.dto.raw.armory.ArmoryDto;
+import com.example.ListArk.dto.raw.character.SiblingCharacterDto;
 import com.example.ListArk.client.util.RetryUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,19 +11,19 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+import static com.example.ListArk.client.util.WebClientHelper.*;
+
 @Service
 @RequiredArgsConstructor
-
 public class CharacterClient {
 
     private final WebClient webClient;
 
     public Mono<List<SiblingCharacterDto>> getCharacterSiblings(String name) {
-        return webClient.get()
-                .uri("/characters/{name}/siblings", name)
-                .retrieve()
-                .bodyToFlux(SiblingCharacterDto.class)
-                .collectList()
-                .transform(RetryUtils.retry3());
+        return WebClientHelper.getList(
+                webClient,
+                "/characters/" + name + "/siblings",
+                SiblingCharacterDto.class,
+                name);
     }
 }

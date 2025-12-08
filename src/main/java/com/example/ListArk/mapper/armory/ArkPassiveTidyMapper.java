@@ -1,12 +1,12 @@
 package com.example.ListArk.mapper.armory;
 
-import com.example.ListArk.Dto.raw.armory.ArmoryDto;
-import com.example.ListArk.Dto.raw.armory.arkpassive.ArmoryArkPassiveDto;
-import com.example.ListArk.Dto.raw.armory.arkpassive.ArkPassiveEffectDto;
-import com.example.ListArk.Dto.raw.armory.arkpassive.ArkPassivePointDto;
-import com.example.ListArk.Dto.tidy.armory.arkpassive.ArkPassiveEffectTidyDto;
-import com.example.ListArk.Dto.tidy.armory.arkpassive.ArkPassivePointTidyDto;
-import com.example.ListArk.Dto.tidy.armory.arkpassive.ArkPassiveTidyDto;
+import com.example.ListArk.dto.raw.armory.ArmoryDto;
+import com.example.ListArk.dto.raw.armory.arkpassive.ArmoryArkPassiveDto;
+import com.example.ListArk.dto.raw.armory.arkpassive.ArkPassiveEffectDto;
+import com.example.ListArk.dto.raw.armory.arkpassive.ArkPassivePointDto;
+import com.example.ListArk.dto.tidy.armory.arkpassive.ArkPassiveEffectTidyDto;
+import com.example.ListArk.dto.tidy.armory.arkpassive.ArkPassivePointTidyDto;
+import com.example.ListArk.dto.tidy.armory.arkpassive.ArkPassiveTidyDto;
 import com.example.ListArk.mapper.NullSafe;
 import org.springframework.stereotype.Component;
 

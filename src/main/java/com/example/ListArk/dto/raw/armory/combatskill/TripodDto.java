@@ -1,0 +1,26 @@
+package com.example.ListArk.dto.raw.armory.combatskill;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+
+@Data
+public class TripodDto {
+
+    @JsonProperty("Tier")
+    private int tier;
+
+    @JsonProperty("Slot")
+    private int slot;
+
+    @JsonProperty("Name")
+    private String name;
+
+    @JsonProperty("Icon")
+    private String icon;
+
+    @JsonProperty("IsSelected")
+    private boolean isSelected;
+
+    @JsonProperty("Tooltip")
+    private String tooltip;
+}

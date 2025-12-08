@@ -1,6 +1,6 @@
 package com.example.ListArk.mapper.armory.avatar;
 
-import com.example.ListArk.Dto.tidy.armory.avatar.AvatarTidyDto;
+import com.example.ListArk.dto.tidy.armory.avatar.AvatarTidyDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

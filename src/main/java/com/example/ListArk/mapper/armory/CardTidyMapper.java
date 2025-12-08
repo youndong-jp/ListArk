@@ -1,9 +1,9 @@
 package com.example.ListArk.mapper.armory;
 
-import com.example.ListArk.Dto.raw.armory.ArmoryDto;
-import com.example.ListArk.Dto.raw.armory.card.*;
-import com.example.ListArk.Dto.tidy.armory.card.CardSimpleDto;
-import com.example.ListArk.Dto.tidy.armory.card.CardTidyDto;
+import com.example.ListArk.dto.raw.armory.ArmoryDto;
+import com.example.ListArk.dto.raw.armory.card.*;
+import com.example.ListArk.dto.tidy.armory.card.CardSimpleDto;
+import com.example.ListArk.dto.tidy.armory.card.CardTidyDto;
 import com.example.ListArk.mapper.NullSafe;
 import org.springframework.stereotype.Component;
 

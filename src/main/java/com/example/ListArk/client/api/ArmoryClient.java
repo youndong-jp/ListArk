@@ -1,26 +1,24 @@
 package com.example.ListArk.client.api;
 
-import java.util.List;
-
-import com.example.ListArk.Dto.raw.armory.ArmoryDto;
-import com.example.ListArk.Dto.raw.armory.arkgrid.ArmoryArkGridDto;
-import com.example.ListArk.Dto.raw.armory.arkpassive.ArmoryArkPassiveDto;
-import com.example.ListArk.Dto.raw.armory.avatar.AvatarDto;
-import com.example.ListArk.Dto.raw.armory.card.ArmoryCardDto;
-import com.example.ListArk.Dto.raw.armory.collectibles.CollectibleDto;
-import com.example.ListArk.Dto.raw.armory.colosseum.ArmoryColosseumDto;
-import com.example.ListArk.Dto.raw.armory.combatskill.CombatSkillDto;
-import com.example.ListArk.Dto.raw.armory.engraving.ArmoryEngravingDto;
-import com.example.ListArk.Dto.raw.armory.equipment.EquipmentDto;
-import com.example.ListArk.Dto.raw.armory.gem.ArmoryGemDto;
-import com.example.ListArk.Dto.raw.armory.profile.ArmoryProfileDto;
-import com.example.ListArk.Dto.raw.armory.profile.StatDto;
-
-import com.example.ListArk.client.util.RetryUtils;
+import com.example.ListArk.client.util.WebClientHelper;
+import com.example.ListArk.dto.raw.armory.*;
+import com.example.ListArk.dto.raw.armory.arkgrid.ArmoryArkGridDto;
+import com.example.ListArk.dto.raw.armory.arkpassive.ArmoryArkPassiveDto;
+import com.example.ListArk.dto.raw.armory.avatar.AvatarDto;
+import com.example.ListArk.dto.raw.armory.card.ArmoryCardDto;
+import com.example.ListArk.dto.raw.armory.collectibles.CollectibleDto;
+import com.example.ListArk.dto.raw.armory.colosseum.ArmoryColosseumDto;
+import com.example.ListArk.dto.raw.armory.combatskill.CombatSkillDto;
+import com.example.ListArk.dto.raw.armory.engraving.ArmoryEngravingDto;
+import com.example.ListArk.dto.raw.armory.equipment.EquipmentDto;
+import com.example.ListArk.dto.raw.armory.gem.ArmoryGemDto;
+import com.example.ListArk.dto.raw.armory.profile.ArmoryProfileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,101 +27,110 @@ public class ArmoryClient {
     private final WebClient webClient;
 
     public Mono<ArmoryDto> getCharacterArmory(String name){
-        return webClient.get()
-                .uri("/armories/characters/{name}", name)
-                .retrieve()
-                .bodyToMono(ArmoryDto.class)
-                .transform(RetryUtils.retry3());
+        return WebClientHelper.getMono(
+                webClient,
+                "/armories/characters/{name}",
+                ArmoryDto.class,
+                name
+        );
     }
 
     public Mono<ArmoryProfileDto> getCharacterProfile(String name) {
-        return webClient.get()
-                .uri("/armories/characters/{name}/profiles", name)
-                .retrieve()
-                .bodyToMono(ArmoryProfileDto.class)
-                .transform(RetryUtils.retry3());
+        return WebClientHelper.getMono(
+                webClient,
+                "/armories/characters/{name}/profiles",
+                ArmoryProfileDto.class,
+                name
+        );
     }
 
     public Mono<EquipmentDto> getCharacterEquipment(String name) {
-        return webClient.get()
-                .uri("/armories/characters/{name}/equipments", name)
-                .retrieve()
-                .bodyToMono(EquipmentDto.class)
-                .transform(RetryUtils.retry3());
+        return WebClientHelper.getMono(
+                webClient,
+                "/armories/characters/{name}/equipments",
+                EquipmentDto.class,
+                name
+        );
     }
 
     public Mono<ArmoryEngravingDto> getCharacterEngravings(String name) {
-        return webClient.get()
-                .uri("/armories/characters/{name}/engravings", name)
-                .retrieve()
-                .bodyToMono(ArmoryEngravingDto.class)
-                .transform(RetryUtils.retry3());
+        return WebClientHelper.getMono(
+                webClient,
+                "/armories/characters/{name}/engravings",
+                ArmoryEngravingDto.class,
+                name
+        );
     }
 
     public Mono<ArmoryGemDto> getCharacterGems(String name) {
-        return webClient.get()
-                .uri("/armories/characters/{name}/gems", name)
-                .retrieve()
-                .bodyToMono(ArmoryGemDto.class)
-                .transform(RetryUtils.retry3());
+        return WebClientHelper.getMono(
+                webClient,
+                "/armories/characters/{name}/gems",
+                ArmoryGemDto.class,
+                name
+        );
     }
 
     public Mono<List<AvatarDto>> getCharacterAvatars(String name) {
-        return webClient.get()
-                .uri("/armories/characters/{name}/avatars", name)
-                .retrieve()
-                .bodyToFlux(AvatarDto.class)
-                .collectList()
-                .transform(RetryUtils.retry3());
+        return WebClientHelper.getList(
+                webClient,
+                "/armories/characters/{name}/avatars",
+                AvatarDto.class,
+                name
+        );
     }
 
     public Mono<List<CombatSkillDto>> getCharacterCombatSkills(String name) {
-        return webClient.get()
-                .uri("/armories/characters/{name}/combat-skills", name)
-                .retrieve()
-                .bodyToFlux(CombatSkillDto.class)
-                .collectList()
-                .transform(RetryUtils.retry3());
+        return WebClientHelper.getList(
+                webClient,
+                "/armories/characters/{name}/combat-skills",
+                CombatSkillDto.class,
+                name
+        );
     }
 
     public Mono<ArmoryCardDto> getCharacterCards(String name) {
-        return webClient.get()
-                .uri("/armories/characters/{name}/cards", name)
-                .retrieve()
-                .bodyToMono(ArmoryCardDto.class)
-                .transform(RetryUtils.retry3());
+        return WebClientHelper.getMono(
+                webClient,
+                "/armories/characters/{name}/cards",
+                ArmoryCardDto.class,
+                name
+        );
     }
 
     public Mono<ArmoryColosseumDto> getCharacterColosseums(String name) {
-        return webClient.get()
-                .uri("/armories/characters/{name}/colosseums", name)
-                .retrieve()
-                .bodyToMono(ArmoryColosseumDto.class)
-                .transform(RetryUtils.retry3());
+        return WebClientHelper.getMono(
+                webClient,
+                "/armories/characters/{name}/colosseums",
+                ArmoryColosseumDto.class,
+                name
+        );
     }
 
     public Mono<List<CollectibleDto>> getCharacterCollectibles(String name) {
-        return webClient.get()
-                .uri("/armories/characters/{name}/collectibles", name)
-                .retrieve()
-                .bodyToFlux(CollectibleDto.class)
-                .collectList()
-                .transform(RetryUtils.retry3());
+        return WebClientHelper.getList(
+                webClient,
+                "/armories/characters/{name}/collectibles",
+                CollectibleDto.class,
+                name
+        );
     }
 
     public Mono<ArmoryArkPassiveDto> getCharacterArkPassive(String name) {
-        return webClient.get()
-                .uri("/armories/characters/{name}/arkpassive", name)
-                .retrieve()
-                .bodyToMono(ArmoryArkPassiveDto.class)
-                .transform(RetryUtils.retry3());
+        return WebClientHelper.getMono(
+                webClient,
+                "/armories/characters/{name}/arkpassive",
+                ArmoryArkPassiveDto.class,
+                name
+        );
     }
 
     public Mono<ArmoryArkGridDto> getCharacterArkGrid(String name) {
-        return webClient.get()
-                .uri("/armories/characters/{name}/arkgrid", name)
-                .retrieve()
-                .bodyToMono(ArmoryArkGridDto.class)
-                .transform(RetryUtils.retry3());
+        return WebClientHelper.getMono(
+                webClient,
+                "/armories/characters/{name}/arkgrid",
+                ArmoryArkGridDto.class,
+                name
+        );
     }
 }
