@@ -4,7 +4,7 @@ import com.example.ListArk.Dto.raw.notice.NoticeDto;import lombok.RequiredArgsCo
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
+import com.example.ListArk.client.util.RetryUtils;
 import java.util.List;
 
 @Service
@@ -19,6 +19,7 @@ public class NoticeClient {
                 .uri("/news/notices")
                 .retrieve()
                 .bodyToFlux(NoticeDto.class)
-                .collectList();
+                .collectList()
+                .transform(RetryUtils.retry3());
     }
 }

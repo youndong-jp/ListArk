@@ -1,6 +1,7 @@
 package com.example.ListArk.client.api;
 
 import com.example.ListArk.Dto.raw.character.SiblingCharacterDto;
+import com.example.ListArk.client.util.RetryUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -20,6 +21,7 @@ public class CharacterClient {
                 .uri("/characters/{name}/siblings", name)
                 .retrieve()
                 .bodyToFlux(SiblingCharacterDto.class)
-                .collectList();
+                .collectList()
+                .transform(RetryUtils.retry3());
     }
 }
