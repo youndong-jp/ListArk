@@ -53,7 +53,6 @@ public class CardTidyMapper {
         dto.setGrade(NullSafe.get(c::getGrade, ""));
         dto.setAwakeCount(NullSafe.get(c::getAwakeCount, 0));
         dto.setAwakeTotal(NullSafe.get(c::getAwakeTotal, 0));
-        dto.setTooltip(NullSafe.get(c::getTooltip, ""));
 
         return dto;
     }

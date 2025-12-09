@@ -11,43 +11,46 @@ import com.example.ListArk.dto.tidy.armory.collectible.CollectibleTidyDto;
 import com.example.ListArk.dto.tidy.armory.colosseum.ColosseumTidyDto;
 import com.example.ListArk.dto.tidy.armory.arkpassive.ArkPassiveTidyDto;
 import com.example.ListArk.dto.tidy.armory.arkgrid.ArkGridTidyDto;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@Schema(description = "Armory 전체 정보를 통합한 Tidy DTO (프로필 / 장비 / 각인 / 아바타 / 보석 / 전투스킬 / 카드 등)")
 public class ArmoryTidyDto {
 
-    // 1. 프로필
+    @Schema(description = "캐릭터 프로필 정보")
     private ProfileTidyDto profile;
 
-    // 2. 장비 (6개)
+    @Schema(description = "장비 정보 리스트 (무기/방어구/장신구/팔찌 등)", nullable = true)
     private List<EquipmentTidyDto> equipment;
 
-    // 3. 아바타
+    @Schema(description = "아바타 목록")
     private List<AvatarTidyDto> avatars;
 
-    // 4. 각인
+    @Schema(description = "각인 정보")
     private EngravingTidyDto engravings;
 
-    // 5. 보석
+    @Schema(description = "보석 정보")
     private GemTidyDto gems;
 
-    // 6. 전투 스킬
+    @Schema(description = "전투 스킬 정보")
     private List<CombatSkillTidyDto> combatSkills;
 
-    // 7. 카드
+    @Schema(description = "카드 장착 및 세트 효과 정보")
     private CardTidyDto cards;
 
-    // 8. 수집품
+    @Schema(description = "모험물 정보 (모코코 / 섬의 마음 / 오르페우스의 별 등)")
     private List<CollectibleTidyDto> collectibles;
 
-    // 9. 콜로세움
+    @Schema(description = "증명의 전장(콜로세움) PvP 정보")
     private ColosseumTidyDto colosseum;
 
-    // 10. 아크 패시브
+    @Schema(description = "아크 패시브 활성도 및 효과")
     private ArkPassiveTidyDto arkPassive;
 
-    // 11. 아크 그리드
+    @Schema(description = "아크 그리드 코어/젬/효과 전체 정보")
     private ArkGridTidyDto arkGrid;
 }
