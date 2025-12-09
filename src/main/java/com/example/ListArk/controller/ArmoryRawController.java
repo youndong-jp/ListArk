@@ -1,6 +1,7 @@
 package com.example.ListArk.controller;
 
 import com.example.ListArk.client.raw.ArmoryRawClient;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Hidden
 @RequestMapping("/api/raw/characters")
 @RequiredArgsConstructor
 @Tag(name = "RAW Armory - 세부 조회", description = "Lost Ark Armory 개별 RAW 조회 API")
