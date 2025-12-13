@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 import java.time.Duration;
@@ -19,6 +21,9 @@ public class WebClientConfig {
 
     @Value("${lostark.api-key}")
     private String apiKey;
+
+    @Value("${lostark.api-base-url}")
+    private String apiBaseUrl;
 
     @Bean
     public WebClient webClient() {
@@ -32,16 +37,27 @@ public class WebClientConfig {
 
         return WebClient.builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
-                .baseUrl("https://developer-lostark.game.onstove.com")
+                .baseUrl(apiBaseUrl)
                 .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
-                .filter((request, next) -> {
-                    log.info("[WebClient] Request: {} {}", request.method(), request.url());
-                    return next.exchange(request)
-                            .doOnNext(response ->
-                                    log.info("[WebClient] Response Status: {}", response.statusCode()));
-                })
+                .filter(logRequest())
+                .filter(logResponse())
                 .codecs(configurer ->
-                        configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024))
+                        configurer.defaultCodecs().maxInMemorySize(50 * 1024 * 1024)
+                )
                 .build();
+    }
+
+    private ExchangeFilterFunction logRequest() {
+        return (request, next) -> {
+            log.info("[WebClient] Request: {} {}", request.method(), request.url());
+            return next.exchange(request);
+        };
+    }
+
+    private ExchangeFilterFunction logResponse() {
+        return ExchangeFilterFunction.ofResponseProcessor(response -> {
+            log.info("[WebClient] Response Status: {}", response.statusCode());
+            return Mono.just(response); // 반드시 ClientResponse 반환
+        });
     }
 }

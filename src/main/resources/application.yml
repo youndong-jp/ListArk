@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: ListArk
+
+
+lostark:
+  api-key: ${LOSTARK_API_KEY}
+  api-base-url: https://developer-lostark.game.onstove.com
