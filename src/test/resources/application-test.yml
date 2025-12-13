@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: ListArk-Test
+
+
+  # 테스트는 WebEnvironment.RANDOM_PORT 로 실행되므로
+  # 내장 톰캣 충돌 방지
+  main:
+    allow-bean-definition-overriding: true
+
+# Lost Ark API 설정 - 테스트에서는 Mock 서버 URL로 대체
+lostark:
+  api-key: TEST_KEY
+  api-base-url: http://localhost:8089     # MockLostArkServer가 사용하는 포트
+
+logging:
+  level:
+    root: INFO
+    com.example.ListArk: DEBUG
