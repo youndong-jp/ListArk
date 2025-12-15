@@ -39,8 +39,11 @@ public class EquipmentTooltipParser {
      * @throws Exception JSON 파싱 실패 시
      */
     public void parseAndSetTooltip(String tooltipJson, EquipmentTidyDto dto) throws Exception {
-
+        if (tooltipJson == null || tooltipJson.isBlank()) {
+            return; // ← null 또는 빈 tooltip은 그냥 무시
+        }
         JsonNode root = objectMapper.readTree(tooltipJson);
+
 
         // Element_XXX 순회하면서 type별로 처리
         root.fields().forEachRemaining(entry -> {
