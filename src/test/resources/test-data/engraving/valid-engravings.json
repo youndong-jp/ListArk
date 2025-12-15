@@ -1,0 +1,41 @@
+{
+  "Engravings": null,
+  "Effects": null,
+  "ArkPassiveEffects": [
+    {
+      "AbilityStoneLevel": 2,
+      "Grade": "유물",
+      "Level": 0,
+      "Name": "각성",
+      "Description": "각성기의 재사용 대기시간이 <FONT COLOR='#99ff99'>51.50%</FONT> 감소하고, 사용 제한 횟수가 <FONT COLOR='#99ff99'>5</FONT>회 증가한다."
+    },
+    {
+      "AbilityStoneLevel": null,
+      "Grade": "유물",
+      "Level": 0,
+      "Name": "전문의",
+      "Description": "자신 및 파티원에게 사용하는 실드 및 생명력 회복 효과가 <FONT COLOR='#99ff99'>24.00%</FONT> 증가하고, 대상의 생명력이 <FONT COLOR='#ffff99'>50.00%</FONT> 이하인 경우 해당 효과가 추가로 <FONT COLOR='#99ff99'>8.00%</FONT> 증가한다."
+    },
+    {
+      "AbilityStoneLevel": null,
+      "Grade": "유물",
+      "Level": 4,
+      "Name": "마나의 흐름",
+      "Description": "이동기 및 기본공격을 제외한 스킬 사용 시 <FONT COLOR='#ffff99'>10</FONT>초 동안 마나 회복 속도가 <FONT COLOR='#99ff99'>2.00%</FONT> 증가하며 (최대 <FONT COLOR='#ffff99'>10</FONT>중첩) 해당 효과가 최대 중첩 도달 시 스킬 재사용 대기시간이 추가로 <FONT COLOR='#99ff99'>10.00%</FONT> 감소한다. 해당 효과는 스킬 취소에 따른 재사용 대기시간 감소가 적용되는 경우, 스킬 종료 후 적용된다."
+    },
+    {
+      "AbilityStoneLevel": null,
+      "Grade": "유물",
+      "Level": 4,
+      "Name": "급소 타격",
+      "Description": "무력화 공격 시 주는 무력화 수치가 <FONT COLOR='#99ff99'>37.00%</FONT> 증가한다."
+    },
+    {
+      "AbilityStoneLevel": 2,
+      "Grade": "유물",
+      "Level": 4,
+      "Name": "구슬동자",
+      "Description": "적을 타격 시 일정 확률로 자신의 <FONT COLOR='#ffff99'>8m</FONT> 이내에 자신만 획득 가능한 <FONT COLOR='#99ff99'>31.00%</FONT> 강화된 에테르 1개와 파티원만 획득 가능한 <FONT COLOR='#99ff99'>31.00%</FONT> 강화된 에테르 1개를 생성한다. (발동 재사용 대기시간 <FONT COLOR='#ffff99'>10.0</FONT>초)"
+    }
+  ]
+}

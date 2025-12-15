@@ -1,0 +1,129 @@
+{
+  "CharacterImage": "https://img.lostark.co.kr/armory/2/4DFEFC8E574C1CBF8AC1C8B97DD1A1828862A4D71479AD0272D3A5D44F519EF0.jpg?v=20251215025233",
+  "ExpeditionLevel": 332,
+  "TownLevel": 70,
+  "TownName": "성민이네",
+  "Title": "죽음의 현신",
+  "GuildMemberGrade": "일반 길드원",
+  "GuildName": "모꼬꼬닭",
+  "UsingSkillPoint": 456,
+  "TotalSkillPoint": 480,
+  "Stats": [
+    {
+      "Type": "치명",
+      "Value": "73",
+      "Tooltip": [
+        "<textformat indent='-21' leftMargin='10'><font> </font> 치명타 적중률이 <font color='#99ff99'>2.61%</font> 증가합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 물약 및 원정대 레벨 보상 효과로 <font color='#99ff99'>32</font>만큼 영구적으로 증가되었습니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 카드 도감 누적 효과가 반영된 값으로 전투정보실에서는 별도 수치를 표기하지 않습니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 카드 도감 누적 효과가 반영된 값으로 전투정보실에서는 별도 수치를 표기하지 않습니다.</textformat>"
+      ]
+    },
+    {
+      "Type": "특화",
+      "Value": "637",
+      "Tooltip": [
+        "<textformat indent='-21' leftMargin='10'><font> </font> 신성의 오라 스킬 적용 효율이 <font color='#99ff99'>57.41%</font> 증가합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 타격 시 신앙 게이지 획득량이 <font color='#99ff99'>22.78%</font> 증가합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 각성 스킬의 피해량이 <font color='#99ff99'>13.92%</font> 증가합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 물약 및 원정대 레벨 보상 효과로 <font color='#99ff99'>32</font>만큼 영구적으로 증가되었습니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 카드 도감 누적 효과가 반영된 값으로 전투정보실에서는 별도 수치를 표기하지 않습니다.</textformat>"
+      ]
+    },
+    {
+      "Type": "제압",
+      "Value": "177",
+      "Tooltip": [
+        "<textformat indent='-21' leftMargin='10'><font> </font> 피격이상 및 상태이상 대상에게 주는 피해량이 <font color='#99ff99'>10.85%</font> 증가합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 무력화 대상에게 주는 피해량이 <font color='#99ff99'>12.63%</font> 증가합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 물약 및 원정대 레벨 보상 효과로 <font color='#99ff99'>32</font>만큼 영구적으로 증가되었습니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 카드 도감 누적 효과가 반영된 값으로 전투정보실에서는 별도 수치를 표기하지 않습니다.</textformat>"
+      ]
+    },
+    {
+      "Type": "신속",
+      "Value": "1737",
+      "Tooltip": [
+        "<textformat indent='-21' leftMargin='10'><font> </font> 공격 속도가 <font color='#99ff99'>29.84%</font> 증가합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 이동 속도가 <font color='#99ff99'>29.84%</font> 증가합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 스킬 재사용 대기시간이 <font color='#99ff99'>37.30%</font> 감소합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 물약 및 원정대 레벨 보상 효과로 <font color='#99ff99'>32</font>만큼 영구적으로 증가되었습니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 카드 도감 누적 효과가 반영된 값으로 전투정보실에서는 별도 수치를 표기하지 않습니다.</textformat>"
+      ]
+    },
+    {
+      "Type": "인내",
+      "Value": "69",
+      "Tooltip": [
+        "<textformat indent='-21' leftMargin='10'><font> </font> 물리 방어력이 <font color='#99ff99'>5.64%</font> 증가합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 마법 방어력이 <font color='#99ff99'>5.64%</font> 증가합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 보호막 효과가 <font color='#99ff99'>1.76%</font> 증가합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 생명력 회복 효과가 <font color='#99ff99'>2.46%</font> 증가합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 물약 및 원정대 레벨 보상 효과로 <font color='#99ff99'>28</font>만큼 영구적으로 증가되었습니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 카드 도감 누적 효과가 반영된 값으로 전투정보실에서는 별도 수치를 표기하지 않습니다.</textformat>"
+      ]
+    },
+    {
+      "Type": "숙련",
+      "Value": "71",
+      "Tooltip": [
+        "<textformat indent='-21' leftMargin='10'><font> </font> 상태이상 공격 지속시간이 <font color='#99ff99'>3.04%</font> 증가합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 상태이상 피해 지속시간이 <font color='#99ff99'>2.54%</font> 감소합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 무력화 피해량이 <font color='#99ff99'>2.03%</font> 증가합니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 물약 및 원정대 레벨 보상 효과로 <font color='#99ff99'>28</font>만큼 영구적으로 증가되었습니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 카드 도감 누적 효과가 반영된 값으로 전투정보실에서는 별도 수치를 표기하지 않습니다.</textformat>"
+      ]
+    },
+    {
+      "Type": "최대 생명력",
+      "Value": "380143",
+      "Tooltip": [
+        "<textformat indent='-21' leftMargin='10'><font> </font> 캐릭터의 최대 생명력을 나타냅니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><textformat indent='-21' leftMargin='10'><font> </font> 체력으로 최대 생명력이 <font color='#99ff99'>203844</font> 증가되었습니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 생명 활성력으로 최대 생명력이 <font color='#99ff99'>42.00%</font> 증가되었습니다.</textformat>"
+      ]
+    },
+    {
+      "Type": "공격력",
+      "Value": "158786",
+      "Tooltip": [
+        "<textformat indent='-21' leftMargin='10'><font> </font> 적에게 주는 피해를 계산할 때 기준이 되는 값입니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 힘, 민첩, 지능과 무기 공격력을 기반으로 증가한 기본 공격력은 <font color='#99ff99'>156794</font> 입니다.</textformat>",
+        "<textformat indent='-21' leftMargin='10'><font> </font> 공격력 증감 효과로 공격력이 <font color='#99ff99'>1992</font> 증가되었습니다.</textformat>"
+      ]
+    }
+  ],
+  "Tendencies": [
+    {
+      "Type": "지성",
+      "Point": 537,
+      "MaxPoint": 1000
+    },
+    {
+      "Type": "담력",
+      "Point": 502,
+      "MaxPoint": 1000
+    },
+    {
+      "Type": "매력",
+      "Point": 448,
+      "MaxPoint": 1000
+    },
+    {
+      "Type": "친절",
+      "Point": 447,
+      "MaxPoint": 1000
+    }
+  ],
+  "CombatPower": "3,076.70",
+  "Decorations": {
+    "Symbol": null,
+    "Emblems": null
+  },
+  "HonorPoint": 37,
+  "ServerName": "카제로스",
+  "CharacterName": "이성민화이팅1",
+  "CharacterLevel": 70,
+  "CharacterClassName": "홀리나이트",
+  "ItemAvgLevel": "1,732.50"
+}
