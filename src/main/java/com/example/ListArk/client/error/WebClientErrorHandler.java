@@ -1,6 +1,7 @@
 package com.example.ListArk.client.error;
 
 import com.example.ListArk.exception.ApiKeyExpiredException;
+import com.example.ListArk.exception.CharacterNotFoundException;
 import com.example.ListArk.exception.InvalidRequestException;
 import com.example.ListArk.exception.ExternalApiException;
 
@@ -25,11 +26,11 @@ public class WebClientErrorHandler {
                     .flatMap(msg -> Mono.error(new ApiKeyExpiredException(msg)));
         }
 
-        // 🔥 404 캐릭터 없음 / 잘못된 요청
+// 🔥 404 캐릭터 없음
         if (status == HttpStatus.NOT_FOUND) {
             return response.bodyToMono(String.class)
-                    .defaultIfEmpty("요청한 리소스를 찾을 수 없습니다.")
-                    .flatMap(msg -> Mono.error(new InvalidRequestException(msg)));
+                    .defaultIfEmpty("캐릭터를 찾을 수 없습니다.")
+                    .flatMap(msg -> Mono.error(new CharacterNotFoundException(msg)));
         }
 
         // 🔥 일반적인 4xx → 클라이언트 요청 문제

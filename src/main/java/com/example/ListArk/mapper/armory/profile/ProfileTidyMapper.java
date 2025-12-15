@@ -1,4 +1,4 @@
-package com.example.ListArk.mapper.armory;
+package com.example.ListArk.mapper.armory.profile;
 
 import com.example.ListArk.dto.raw.armory.ArmoryDto;
 import com.example.ListArk.dto.raw.armory.profile.ArmoryProfileDto;
@@ -20,9 +20,13 @@ public class ProfileTidyMapper {
             Set.of("치명", "특화", "신속", "제압", "인내", "숙련");
 
     public ProfileTidyDto toTidy(ArmoryDto raw) {
-        ArmoryProfileDto p = NullSafe.get(raw::getArmoryProfile);
+        //raw 자체가 null인 경우 → 빈 DTO 반환
+        if (raw == null) {
+            return empty();
+        }
+        ArmoryProfileDto p = NullSafe.get(() -> raw.getArmoryProfile());
         if (p == null) {
-            return new ProfileTidyDto();
+            return empty();
         }
 
         ProfileTidyDto dto = new ProfileTidyDto();
@@ -90,5 +94,11 @@ public class ProfileTidyMapper {
         } catch (NumberFormatException e) {
             return 0;
         }
+    }
+    private ProfileTidyDto empty() {
+        ProfileTidyDto dto = new ProfileTidyDto();
+        dto.setStats(new HashMap<>());
+        dto.setTendencies(new HashMap<>());
+        return dto;
     }
 }

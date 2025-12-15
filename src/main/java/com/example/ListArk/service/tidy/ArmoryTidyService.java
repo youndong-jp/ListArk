@@ -21,6 +21,7 @@ import com.example.ListArk.mapper.armory.arkgrid.ArkGridTidyMapper;
 import com.example.ListArk.mapper.armory.avatar.AvatarTidyMapper;
 import com.example.ListArk.mapper.armory.engraving.EngravingTidyMapper;
 import com.example.ListArk.mapper.armory.equipment.EquipmentTidyMapper;
+import com.example.ListArk.mapper.armory.profile.ProfileTidyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

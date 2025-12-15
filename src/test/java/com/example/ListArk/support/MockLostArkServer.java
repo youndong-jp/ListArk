@@ -57,7 +57,9 @@ public class MockLostArkServer {
      * Armory 전체 조회 Mock 응답 설정
      */
     public void stubArmory(String characterName, String jsonResponse) {
-        stubFor(get(urlPathMatching("/armories/characters/.*"))
+        String url = "/armories/characters/" + characterName + "/armories";
+
+        stubFor(get(urlEqualTo(url))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
@@ -66,11 +68,16 @@ public class MockLostArkServer {
         );
     }
 
+
     /**
      * Profile 조회 Mock 응답 설정
      */
     public void stubProfile(String characterName, String jsonResponse) {
-        stubFor(get(urlPathEqualTo("/armories/characters/" + characterName + "/profiles"))
+        String url = "/armories/characters/" + characterName + "/profiles";
+
+        System.out.println("[WIREMOCK] Registering stubProfile for URL = " + url);
+
+        stubFor(get(urlEqualTo(url))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
@@ -78,6 +85,8 @@ public class MockLostArkServer {
                 )
         );
     }
+
+
 
     /**
      * 404 Not Found Mock 응답 설정

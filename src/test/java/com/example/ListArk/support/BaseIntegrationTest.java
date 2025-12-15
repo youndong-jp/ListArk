@@ -50,40 +50,97 @@ public abstract class BaseIntegrationTest {
     }
 
     /**
+     * 캐릭터명 + 엔드포인트 조합 Helper
+     */
+    protected String api(String name, String path) {
+        return String.format("/api/characters/%s/%s", name, path);
+    }
+
+    /**
      * 캐릭터명으로 Armory 전체 조회
      */
-    protected String getArmoryUrl(String characterName) {
-        return String.format("/api/characters/%s/armory", characterName);
+    protected String getArmoryUrl(String name) {
+        return api(name, "armory");
     }
 
     /**
      * 캐릭터명으로 Profile 조회
      */
-    protected String getProfileUrl(String characterName) {
-        return String.format("/api/characters/%s/profile", characterName);
+    protected String getProfileUrl(String name) {
+        return api(name, "profile");
     }
 
     /**
      * 캐릭터명으로 Equipment 조회
      */
-    protected String getEquipmentUrl(String characterName) {
-        return String.format("/api/characters/%s/equipment", characterName);
+    protected String getEquipmentUrl(String name) {
+        return api(name, "equipment");
     }
 
     /**
-     * 테스트용 실제 캐릭터명 (Lost Ark API 호출용)
-     * TODO: 실제 존재하는 캐릭터명으로 변경
+     * 캐릭터명으로 Avatar 조회
      */
-    protected static final String VALID_CHARACTER = "니나브";
+    protected String getAvatarUrl(String name) {
+        return api(name, "avatars");
+    }
 
     /**
-     * 테스트용 존재하지 않는 캐릭터명
+     * 캐릭터명으로 Engraving 정보 조회
      */
+    protected String getEngravingUrl(String name) {
+        return api(name, "engravings");
+    }
+
+    /**
+     * 캐릭터명으로 Gem(보석) 정보 조회
+     */
+    protected String getGemsUrl(String name) {
+        return api(name, "gems");
+    }
+
+    /**
+     * 캐릭터명으로 Combat Skill 정보 조회
+     */
+    protected String getCombatSkillsUrl(String name) {
+        return api(name, "combat-skills");
+    }
+
+    /**
+     * 캐릭터명으로 Card & 세트 효과 조회
+     */
+    protected String getCardsUrl(String name) {
+        return api(name, "cards");
+    }
+
+    /**
+     * 캐릭터명으로 Collectibles(모코코, 섬의 마음 등) 조회
+     */
+    protected String getCollectiblesUrl(String name) {
+        return api(name, "collectibles");
+    }
+
+    /**
+     * 캐릭터명으로 Colosseum(PvP) 정보 조회
+     */
+    protected String getColosseumUrl(String name) {
+        return api(name, "colosseum");
+    }
+
+    /**
+     * 캐릭터명으로 Ark Passive 정보 조회
+     */
+    protected String getArkPassiveUrl(String name) {
+        return api(name, "arkpassive");
+    }
+
+    /**
+     * 캐릭터명으로 Ark Grid(코어/젬/효과) 조회
+     */
+    protected String getArkGridUrl(String name) {
+        return api(name, "arkgrid");
+    }
+
+    protected static final String VALID_CHARACTER = "이성민화이팅1";
     protected static final String INVALID_CHARACTER = "존재하지않는캐릭터명123456789";
 
-    /**
-     * 테스트용 신규/저렙 캐릭터명 (일부 데이터 없음)
-     * TODO: 실제 존재하는 저렙 캐릭터명으로 변경
-     */
-    protected static final String LOW_LEVEL_CHARACTER = "신규캐릭터";
 }
