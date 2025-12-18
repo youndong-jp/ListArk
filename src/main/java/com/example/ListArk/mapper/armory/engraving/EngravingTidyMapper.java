@@ -17,6 +17,11 @@ public class EngravingTidyMapper {
 
         EngravingTidyDto tidy = new EngravingTidyDto();
 
+        if (raw == null) {
+            tidy.setEngravings(List.of());
+            return tidy;
+        }
+
         ArmoryEngravingDto engravingRoot = NullSafe.get(raw::getArmoryEngraving);
         if (engravingRoot == null) {
             tidy.setEngravings(List.of());
