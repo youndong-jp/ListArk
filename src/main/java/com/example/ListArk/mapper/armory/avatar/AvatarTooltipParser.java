@@ -26,16 +26,16 @@ public class AvatarTooltipParser {
      */
     public void parseTooltipData(Object tooltipObj, AvatarTidyDto dto) {
 
-        if (!(tooltipObj instanceof Map<?, ?> tooltip)) {
-            log.debug("툴팁이 Map 형태가 아님");
-            return;
-        }
-
         // 기본값 설정
         dto.setIsTradable(true);
         dto.setIsSellable(true);
         dto.setIsDecomposable(true);
         dto.setIsBound(false);
+
+        if (!(tooltipObj instanceof Map<?, ?> tooltip)) {
+            log.debug("툴팁이 Map 형태가 아님");
+            return;
+        }
 
         // Element 순회
         for (Object entryObj : tooltip.entrySet()) {
@@ -54,6 +54,7 @@ public class AvatarTooltipParser {
                 case "MultiTextBox"   -> parseMultiTextBox(dto, clean(value));
                 case "ItemPartBox"    -> parseEffects(dto, value);
                 case "SymbolString"   -> parseTendency(dto, value);
+                case "Description"   -> parseDescription(dto, value);
             }
         }
     }
@@ -64,8 +65,10 @@ public class AvatarTooltipParser {
     private void parseSingleTextBox(AvatarTidyDto dto, String text) {
         // 전용 클래스
         if (text.contains("전용")) {
-            dto.setExclusiveClass(text.replace("전용", "").trim());
+            String cls = text.split("전용")[0].trim();
+            dto.setExclusiveClass(cls);
         }
+
 
         // 귀속
         if (text.contains("귀속")) {
@@ -102,24 +105,20 @@ public class AvatarTooltipParser {
     private void parseEffects(AvatarTidyDto dto, Object valueObj) {
         if (!(valueObj instanceof Map<?, ?> valueMap)) return;
 
-        List<String> effects = new ArrayList<>();
+        if (dto.getEffects() == null) {
+            dto.setEffects(new ArrayList<>());
+        }
 
         for (Object v : valueMap.values()) {
             String text = clean(v);
 
-            // "기본 효과" 제목은 건너뛰기
             if (text.contains("효과")) continue;
-
-            // 실제 효과만 추가
             if (!text.isEmpty()) {
-                effects.add(text);
+                dto.getEffects().add(text);
             }
         }
-
-        if (!effects.isEmpty()) {
-            dto.setEffects(effects);
-        }
     }
+
 
     // ──────────────────────────────────────────────
     //  SymbolString: 성향
@@ -158,4 +157,16 @@ public class AvatarTooltipParser {
                 .replace("|", "")
                 .trim();
     }
+    private void parseDescription(AvatarTidyDto dto, Object valueObj) {
+        String text = clean(valueObj);
+        if (text.isEmpty()) return;
+
+        // effects 초기화 안 되어 있을 수 있으니 방어
+        if (dto.getEffects() == null) {
+            dto.setEffects(new ArrayList<>());
+        }
+
+        dto.getEffects().add(text);
+    }
+
 }
