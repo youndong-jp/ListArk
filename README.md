@@ -13,10 +13,10 @@
 - [주요 기능](#주요-기능)
 - [기술 스택](#기술-스택)
 - [아키텍처](#아키텍처)
-- [기술적 챌린지](#기술적-챌린지)
+- [기술적 챌린지(요약)](#기술적-챌린지-요약)
 - [시작하기](#시작하기)
 - [API 문서](#api-문서)
-- [테스트](#테스트)
+- [테스트(요약)](#테스트-요약)
 - [향후 계획](#향후-계획)
 - [회고](#회고)
 
@@ -121,7 +121,7 @@ Lost Ark API의 복잡한 Raw 데이터를 프론트엔드 친화적인 구조�
 | **Java**        | 17 | Java를 주력 언어로 학습 중이었고, LTS 버전이라 학습·운영 모두 안정적. Stream API, Record 등 모던 Java 기능 활용 |
 | **Spring Boot** | 3.x | Controller–Service–Mapper 구조를 직접 설계하며 DI/IoC 개념을 체득 |
 | **Maven**       | 3.8+ | Spring Initializr 기본 설정으로 시작. 의존성 관리와 테스트 실행(`mvn test`), 커버리지 리포트(`mvn jacoco:report`)를 직접 사용하며 빌드 도구의 역할 이해 |
-| WebClient       | - | 외부 Lost Ark API 연동을 위해 사용. 서버 구조는 MVC로 유지하면서, 외부 HTTP 호출만 WebClient로 처리
+| WebClient       | - | 외부 API 호출 전용으로 사용. 내부 구조는 MVC 유지|
 | **Lombok**      | - | 반복적인 Getter/Setter 작성에 지쳐서 도입. `@Data`, `@Builder`로 코드량 50% 감소 |
 
 ### Documentation
@@ -157,224 +157,36 @@ ListArk는 외부 API의 복잡한 Raw 데이터를 프론트엔드에서 바로
 ```
 Client (React - 예정)
         ↓
-Controller (HTTP 요청/응답)
+Controller
+(HTTP 요청/응답)
         ↓
-Service (Raw → Tidy 오케스트레이션)
+Service
+(Raw → Tidy 오케스트레이션)
         ↓
-Mapper (DTO 변환)
+API Client
+(Lost Ark API 의미 단위)
         ↓
-Parser (Tooltip 파싱, HTML 제거)
+WebClientHelper
+(공통 HTTP 처리)
         ↓
-WebClient (Lost Ark Open API 호출)
+WebClient
+(HTTP 통신)
+        ↓
+Lost Ark Open API
 ```
+외부 API의 복잡한 Raw 데이터를  
+프론트엔드에서 바로 사용할 수 있는 형태로 가공하는 구조입니다.
 
-### 계층별 책임
-
-| 계층 | 책임 | 예시 |
-|------|------|------|
-| **Controller** | HTTP 요청/응답 처리 | `/api/characters/{name}/armory` |
-| **Service** | 비즈니스 로직 조합 | 여러 Mapper 호출 및 결과 조합 |
-| **Mapper** | DTO 변환 | `ArmoryDto` → `EquipmentTidyDto` |
-| **Parser** | 복잡한 문자열 파싱 | HTML 태그 제거, 정규식 처리 |
-| **Client** | 외부 API 호출 | WebClient로 Lost Ark API 연동 |
-| **Util** | 공통 유틸리티 | NullSafe, Retry 로직 |
+자세한 설계 의도와 계층별 책임은 아래 문서를 참고해주세요.
+- [Architecture](docs/architecture.md)
 
 ---
+## 기술적 챌린지 (요약)
 
-## 기술적 챌린지
-
-### 1. 동적 Tooltip 파싱 문제
-
-**문제 상황:**
-
-Lost Ark API의 Tooltip 데이터는 HTML 태그가 섞인 JSON 문자열 형태입니다.
-게다가 장비 타입마다 Element 순서와 구조가 달라서 하드코딩이 불가능했습니다.
-```json
-{
-  "Element_001": "<FONT COLOR='#FFD200'>힘 +2.00%</FONT>",
-  "Element_005": {
-    "type": "ItemPartBox",
-    "value": {
-      "Element_000": "<FONT COLOR='#A9D0F5'>기본 효과</FONT>",
-      "Element_001": "힘 +2.00%"
-    }
-  }
-}
-```
-
-**해결 과정:**
-1. **정규식으로 HTML 태그 제거**: `<[^>]*>` 패턴 매칭
-2. **동적 Element 순회**: 모든 Element를 반복하며 type 기반 파싱
-3. **Parser 추상화**: 각 카테고리별로 Parser 분리
-    - `EquipmentTooltipParser`
-    - `AvatarTooltipParser`
-    - `ArkGridTooltipParser` (가장 복잡)
-
-**결과:**
-- 유연한 파서 구조로 새로운 타입 추가 시 코드 수정 불필요
-- 각 타입별 Parser로 책임 분리 (단일 책임 원칙)
-
-**배운 점:**
-
-하드코딩보다 동적 처리가 장기적으로 유지보수에 유리합니다. 특히 외부 API는 구조가 언제든 바뀔 수 있기 때문에 유연한 설계가 필수입니다.
-
----
-
-### 2. NPE(NullPointerException) 방어
-
-**문제 상황:**
-
-Lost Ark API가 간헐적으로 `null` 값을 반환했습니다.
-- 장비 미착용 캐릭터: `ArmoryEquipment: null`
-- 아바타 미착용: `ArmoryAvatar: null`
-- 보석 미장착: `Gems: null`
-```java
-// 기존 코드 - NPE 위험
-String type = raw.getType();  // raw가 null이면?
-List<Equipment> items = raw.getArmoryEquipment();  // null이면?
-String name = items.get(0).getName();  // items가 빈 리스트면?
-```
-
-**해결 방법:**
-
-`NullSafe` 유틸리티 클래스 작성
-```java
-public class NullSafe {
-    /**
-     * Supplier로 null 안전 호출
-     */
-    public static <T> T get(Supplier<T> supplier, T defaultValue) {
-        try {
-            T value = supplier.get();
-            return value != null ? value : defaultValue;
-        } catch (NullPointerException e) {
-            return defaultValue;
-        }
-    }
-    
-    /**
-     * 리스트 null 안전 처리
-     */
-    public static <T> List<T> list(List<T> list) {
-        return list != null ? list : List.of();
-    }
-}
-```
-
-**사용 예시:**
-```java
-// NPE 안전한 코드
-String type = NullSafe.get(raw::getType, "");
-List<Equipment> items = NullSafe.list(raw.getArmoryEquipment());
-```
-
-**결과:**
-- NPE 발생률 0%
-- 방어적 프로그래밍 습관 형성
-
-**배운 점:**
-
-외부 API 연동 시 **"null은 언제든 올 수 있다"**는 가정하에 코드를 작성해야 합니다.
-
----
-
-### 3. API 재시도 전략 (Resilience)
-
-**문제 상황:**
-
-Lost Ark API가 간헐적으로 `503 Service Unavailable` 에러를 반환했습니다.
-일시적인 장애에서도 사용자에게 바로 에러를 보여주는 것은 좋지 않은 UX입니다.
-
-**해결 방법:**
-
-Exponential Backoff + 최대 3회 재시도 로직 구현
-```java
-@Component
-public class RetryTemplate {
-    public <T> T execute(Supplier<T> supplier, int maxRetries) {
-        int attempt = 0;
-        while (attempt < maxRetries) {
-            try {
-                return supplier.get();
-            } catch (WebClientResponseException e) {
-                if (e.getStatusCode().is5xxServerError()) {
-                    attempt++;
-                    // 2초, 4초, 8초 간격으로 재시도
-                    long delay = (long) Math.pow(2, attempt) * 1000;
-                    Thread.sleep(delay);
-                } else {
-                    throw e;  // 4xx 에러는 재시도 안함
-                }
-            }
-        }
-        throw new ExternalApiException("최대 재시도 횟수 초과");
-    }
-}
-```
-
-**결과:**
-- 일시적인 API 장애 상황에서도 재시도를 통해 성공 확률을 높임
-- 외부 API 호출 없이 테스트 가능해져 테스트 실행 속도 체감 개선
-
-**배운 점:**
-
-외부 의존성에 대한 **복원력(resilience) 설계**가 얼마나 중요한지 알게 되었습니다.
-
----
-
-### 4. 테스트 가능한 설계
-
-**문제 상황:**
-
-실제 Lost Ark API를 호출하는 테스트는:
-- 느림 (네트워크 I/O, 평균 1-2초)
-- 불안정 (API 장애 시 테스트 실패)
-- API Key 관리 문제
-
-**해결 방법:**
-
-WireMock을 사용한 Mock 서버 구축
-```java
-@Component
-public class MockLostArkServer {
-    private WireMockServer wireMockServer;
-    
-    public void stubArmory(String characterName, String jsonResponse) {
-        stubFor(get(urlEqualTo("/armories/characters/" + characterName))
-                .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody(jsonResponse)
-                )
-        );
-    }
-}
-```
-
-**테스트 예시:**
-```java
-@Test
-void 캐릭터_정보_조회_성공() {
-    // given
-    String json = loadTestData("armory-response.json");
-    mockServer.stubArmory("테스트캐릭터", json);
-    
-    // when
-    ArmoryTidyDto result = armoryService.getArmory("테스트캐릭터");
-    
-    // then
-    assertThat(result.getProfile().getName()).isEqualTo("테스트캐릭터");
-}
-```
-
-**결과:**
-- 빠른 테스트 실행 (2초 → 0.05초, **40배 향상**)
-- 테스트 환경에서 외부 API 의존성 제거로 안정적인 테스트 환경 구성
-- 외부 API 의존성 제거
-
-**배운 점:**
-
-테스트 가능한 설계를 **처음부터** 고려하는 것이 중요합니다.
+- HTML이 섞인 Tooltip JSON을 동적으로 파싱해야 하는 문제
+- 외부 API의 null 응답으로 인한 NPE 방어
+- Reactive 환경에서의 API 재시도 전략 설계
+- WireMock을 활용한 외부 API 의존성 제거 테스트
 
 ---
 
@@ -418,106 +230,27 @@ mvn spring-boot:run
 ```
 http://localhost:8080/swagger-ui.html
 ```
-
-### 빠른 테스트
-```bash
-# 캐릭터 정보 조회
-curl http://localhost:8080/api/characters/캐릭터명/armory
-```
-
 ---
 
 ## API 문서
 
-### Swagger UI
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- 상세 엔드포인트 설명은 [API Details](docs/api-detail.md) 참고
 
-실행 후 브라우저에서 확인:
-```
-http://localhost:8080/swagger-ui.html
-```
-
-### 주요 엔드포인트
-
-#### 1. 캐릭터 전체 정보 조회
-```http
-GET /api/characters/{characterName}/armory
-```
-
-**Response Example:**
-```json
-{
-  "success": true,
-  "data": {
-    "profile": {
-      "characterName": "홀리나이트",
-      "characterLevel": 60,
-      "itemLevel": "1680.83",
-      "characterClass": "홀리나이트",
-      "serverName": "루페온"
-    },
-    "equipment": [
-      {
-        "slot": "무기",
-        "name": "광휘의 대검",
-        "grade": "고대",
-        "quality": 100
-      }
-    ]
-  }
-}
-```
-
-#### 2. 에러 응답
-```json
-{
-  "success": false,
-  "error": {
-    "code": "CHARACTER_NOT_FOUND",
-    "message": "존재하지 않는 캐릭터입니다.",
-    "status": 404
-  }
-}
-```
 
 ---
 
-## 테스트
+## 테스트 (요약)
 
 ### 테스트 실행
 ```bash
-# 전체 테스트 실행
 mvn test
-
-# 테스트 커버리지 리포트 생성
-mvn test jacoco:report
-
-# 리포트 확인 (Mac)
-open target/site/jacoco/index.html
-
-# 리포트 확인 (Windows)
-start target/site/jacoco/index.html
 ```
+- Mapper / Parser 중심 테스트
+- WireMock 기반 외부 API Mock
+- JaCoCo 커버리지 측정
 
-### 테스트 구조
-```
-src/test/java/
-├── integration/
-│   ├── mapper/
-│   │   ├── equipment/          # 장비 Mapper 테스트
-│   │   ├── avatar/             # 아바타 Mapper 테스트
-│   │   ├── engraving/          # 각인 Mapper 테스트
-│   │   └── arkgrid/            # 아크그리드 Mapper 테스트
-│   └── armory/
-│       └── ArmoryIntegrationTest  # API 통합 테스트
-└── support/
-    ├── BaseIntegrationTest        # 테스트 베이스
-    └── MockLostArkServer          # WireMock 서버
-```
-
-### 테스트 전략
-
-현재는 **데이터 구조가 복잡한 Mapper/Parser 테스트에 집중**하고 있으며,
-Service/Controller 테스트는 기능 확장 이후 보강할 예정입니다.
+자세한 테스트 전략은 ***[Testing Strategy](docs/testing.md)*** 에 정리되어 있습니다.
 
 ---
 
@@ -625,6 +358,11 @@ Service/Controller 테스트는 기능 확장 이후 보강할 예정입니다.
 - **로아와** - 레퍼런스 사이트
 
 ---
+##  문서
+
+- ***[Architecture](docs/architecture.md)***
+- ***[API Details](docs/api-detail.md)***
+- ***[Testing Strategy](docs/testing.md)***
 
 <div align="center">
 
