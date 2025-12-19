@@ -1,0 +1,633 @@
+# ListArk
+
+> 프론트엔드 개발자를 위한 로스트아크 캐릭터 정보 API 래퍼 서비스
+
+[![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen.svg)](https://spring.io/projects/spring-boot)
+
+---
+
+## 목차
+
+- [프로젝트 소개](#프로젝트-소개)
+- [주요 기능](#주요-기능)
+- [기술 스택](#기술-스택)
+- [아키텍처](#아키텍처)
+- [기술적 챌린지](#기술적-챌린지)
+- [시작하기](#시작하기)
+- [API 문서](#api-문서)
+- [테스트](#테스트)
+- [향후 계획](#향후-계획)
+- [회고](#회고)
+
+---
+
+## 프로젝트 소개
+
+### 개발 동기
+
+**"개발자는 무언가를 만들어야 한다"**
+
+이론만 공부하다 "난 뭘 공부하고 있는 거지?"라는 생각이 들었습니다.
+실제로 동작하는 무언가를 만들어야 진짜 개발자라는 생각에 프로젝트를 시작했습니다.
+
+단순한 CRUD가 아닌, **내가 좋아하는 것**과 **실제로 사용할 수 있는 것**을 만들기로 결심했습니다.
+
+### 왜 ListArk인가?
+
+- **개인적 관심사**: 평소 즐기는 로스트아크 게임 데이터 활용
+- **실전 경험**: 학습 + 포트폴리오 + 서비스 운영을 한 번에
+- **실사용자 확보**: 친구들에게 실제 배포하여 피드백 수집
+- **레퍼런스**: [로아와](https://loawa.com/) 같은 실서비스를 목표로
+
+---
+
+## 주요 기능
+
+### 1. 캐릭터 정보 조회
+```bash
+GET /api/characters/{characterName}/armory
+```
+
+**제공 정보:**
+- 프로필 (레벨, 아이템 레벨, 서버, 클래스)
+- 장비 (무기, 방어구, 악세서리)
+- 아바타 (외형 정보)
+- 각인 (활성화된 각인 정보)
+- 스킬 (스킬 빌드 정보)
+- 보석 (보석 정보 )
+- 카드 (장착 카드, 세트 효과)
+- 컬렉션 (모험물 현황)
+- 아크 패시브 (아크 패시브 정보)
+- 아크 그리드 (아크 그리드  정보)
+
+### 2. Raw → Tidy 데이터 변환
+
+Lost Ark API의 복잡한 Raw 데이터를 프론트엔드 친화적인 구조로 변환합니다.
+
+**Before (Raw API):**
+```json
+{
+  "ArkPassiveEffects": [
+    {
+      "AbilityStoneLevel": 2,
+      "Grade": "유물",
+      "Level": 0,
+      "Name": "각성",
+      "Description": "각성기의 재사용 대기시간이 <FONT COLOR='#99ff99'>51.50%</FONT> 감소하고..."
+    }
+  ]
+}
+```
+
+**After (Tidy API):**
+```json
+{
+  "success": true,
+  "data": {
+    "engravings": [
+      {
+        "name": "각성",
+        "level": 2,
+        "stoneLevel": 2,
+        "grade": "유물",
+        "description": "각성기의 재사용 대기시간이 51.50% 감소하고..."
+      }
+    ]
+  }
+}
+```
+
+**주요 변환 작업:**
+- HTML 태그 제거 (`<FONT>`, `<BR>` 등)
+- 중첩된 JSON 구조 단순화
+- 프론트엔드에서 사용하기 쉬운 필드명으로 변경
+- null 안전 처리
+
+### 3. Swagger API 문서 자동 생성
+
+- 모든 API 엔드포인트 자동 문서화
+- Request/Response 예시 포함
+- 브라우저에서 직접 테스트 가능
+
+---
+
+## 기술 스택
+
+### Backend
+
+| 기술              | 버전 | 사용 계기 & 배운 점 |
+|-----------------|------|---------------------|
+| **Java**        | 17 | Java를 주력 언어로 학습 중이었고, LTS 버전이라 학습·운영 모두 안정적. Stream API, Record 등 모던 Java 기능 활용 |
+| **Spring Boot** | 3.x | Controller–Service–Mapper 구조를 직접 설계하며 DI/IoC 개념을 체득 |
+| **Maven**       | 3.8+ | Spring Initializr 기본 설정으로 시작. 의존성 관리와 테스트 실행(`mvn test`), 커버리지 리포트(`mvn jacoco:report`)를 직접 사용하며 빌드 도구의 역할 이해 |
+| WebClient       | - | 외부 Lost Ark API 연동을 위해 사용. 서버 구조는 MVC로 유지하면서, 외부 HTTP 호출만 WebClient로 처리
+| **Lombok**      | - | 반복적인 Getter/Setter 작성에 지쳐서 도입. `@Data`, `@Builder`로 코드량 50% 감소 |
+
+### Documentation
+
+| 기술 | 사용 계기 & 배운 점 |
+|------|---------------------|
+| **SpringDoc OpenAPI** | API 문서를 수동으로 관리하는 번거로움 해소. Annotation만으로 자동 문서화되는 편리함 경험 |
+| **Swagger UI** | Postman 없이 브라우저에서 API를 바로 테스트할 수 있어 개발 속도 향상 |
+
+### Testing
+
+| 기술 | 사용 계기 & 배운 점 |
+|------|---------------------|
+| **JUnit 5** | Java 테스트의 표준. `@Test`, `@DisplayName`으로 가독성 높은 테스트 작성 |
+| **Mockito** | 실제 API를 호출하지 않고 테스트하는 방법 모색 중 도입. Mock 객체의 개념과 중요성 이해 |
+| **WireMock** | Lost Ark API 장애로 테스트가 불안정해지는 문제 해결. 외부 의존성 제거의 중요성 체감 |
+| **JaCoCo** | "내 코드가 얼마나 테스트되었나?" 궁금해서 도입. 커버리지 수치로 테스트 품질 측정 |
+| **AssertJ** | JUnit 기본 assert보다 가독성이 좋아 도입. 메서드 체이닝 기반의 직관적인 검증 |
+
+### External API
+
+| API | 사용 계기 & 배운 점 |
+|-----|---------------------|
+| **Lost Ark Open API** | 내가 하는 게임의 데이터를 활용하고 싶어 선택. **외부 API는 항상 불완전하다는 전제로 코드를 짜야 한다**는 것을 처음 체감. null 처리, 재시도, Rate Limit 등 고려사항 학습 |
+
+---
+
+## 아키텍처
+
+### 전체 흐름
+
+ListArk는 외부 API의 복잡한 Raw 데이터를 프론트엔드에서 바로 사용할 수 있도록 가공하는 구조입니다.
+```
+Client (React - 예정)
+        ↓
+Controller (HTTP 요청/응답)
+        ↓
+Service (Raw → Tidy 오케스트레이션)
+        ↓
+Mapper (DTO 변환)
+        ↓
+Parser (Tooltip 파싱, HTML 제거)
+        ↓
+WebClient (Lost Ark Open API 호출)
+```
+
+### 계층별 책임
+
+| 계층 | 책임 | 예시 |
+|------|------|------|
+| **Controller** | HTTP 요청/응답 처리 | `/api/characters/{name}/armory` |
+| **Service** | 비즈니스 로직 조합 | 여러 Mapper 호출 및 결과 조합 |
+| **Mapper** | DTO 변환 | `ArmoryDto` → `EquipmentTidyDto` |
+| **Parser** | 복잡한 문자열 파싱 | HTML 태그 제거, 정규식 처리 |
+| **Client** | 외부 API 호출 | WebClient로 Lost Ark API 연동 |
+| **Util** | 공통 유틸리티 | NullSafe, Retry 로직 |
+
+---
+
+## 기술적 챌린지
+
+### 1. 동적 Tooltip 파싱 문제
+
+**문제 상황:**
+
+Lost Ark API의 Tooltip 데이터는 HTML 태그가 섞인 JSON 문자열 형태입니다.
+게다가 장비 타입마다 Element 순서와 구조가 달라서 하드코딩이 불가능했습니다.
+```json
+{
+  "Element_001": "<FONT COLOR='#FFD200'>힘 +2.00%</FONT>",
+  "Element_005": {
+    "type": "ItemPartBox",
+    "value": {
+      "Element_000": "<FONT COLOR='#A9D0F5'>기본 효과</FONT>",
+      "Element_001": "힘 +2.00%"
+    }
+  }
+}
+```
+
+**해결 과정:**
+1. **정규식으로 HTML 태그 제거**: `<[^>]*>` 패턴 매칭
+2. **동적 Element 순회**: 모든 Element를 반복하며 type 기반 파싱
+3. **Parser 추상화**: 각 카테고리별로 Parser 분리
+    - `EquipmentTooltipParser`
+    - `AvatarTooltipParser`
+    - `ArkGridTooltipParser` (가장 복잡)
+
+**결과:**
+- 유연한 파서 구조로 새로운 타입 추가 시 코드 수정 불필요
+- 각 타입별 Parser로 책임 분리 (단일 책임 원칙)
+
+**배운 점:**
+
+하드코딩보다 동적 처리가 장기적으로 유지보수에 유리합니다. 특히 외부 API는 구조가 언제든 바뀔 수 있기 때문에 유연한 설계가 필수입니다.
+
+---
+
+### 2. NPE(NullPointerException) 방어
+
+**문제 상황:**
+
+Lost Ark API가 간헐적으로 `null` 값을 반환했습니다.
+- 장비 미착용 캐릭터: `ArmoryEquipment: null`
+- 아바타 미착용: `ArmoryAvatar: null`
+- 보석 미장착: `Gems: null`
+```java
+// 기존 코드 - NPE 위험
+String type = raw.getType();  // raw가 null이면?
+List<Equipment> items = raw.getArmoryEquipment();  // null이면?
+String name = items.get(0).getName();  // items가 빈 리스트면?
+```
+
+**해결 방법:**
+
+`NullSafe` 유틸리티 클래스 작성
+```java
+public class NullSafe {
+    /**
+     * Supplier로 null 안전 호출
+     */
+    public static <T> T get(Supplier<T> supplier, T defaultValue) {
+        try {
+            T value = supplier.get();
+            return value != null ? value : defaultValue;
+        } catch (NullPointerException e) {
+            return defaultValue;
+        }
+    }
+    
+    /**
+     * 리스트 null 안전 처리
+     */
+    public static <T> List<T> list(List<T> list) {
+        return list != null ? list : List.of();
+    }
+}
+```
+
+**사용 예시:**
+```java
+// NPE 안전한 코드
+String type = NullSafe.get(raw::getType, "");
+List<Equipment> items = NullSafe.list(raw.getArmoryEquipment());
+```
+
+**결과:**
+- NPE 발생률 0%
+- 방어적 프로그래밍 습관 형성
+
+**배운 점:**
+
+외부 API 연동 시 **"null은 언제든 올 수 있다"**는 가정하에 코드를 작성해야 합니다.
+
+---
+
+### 3. API 재시도 전략 (Resilience)
+
+**문제 상황:**
+
+Lost Ark API가 간헐적으로 `503 Service Unavailable` 에러를 반환했습니다.
+일시적인 장애에서도 사용자에게 바로 에러를 보여주는 것은 좋지 않은 UX입니다.
+
+**해결 방법:**
+
+Exponential Backoff + 최대 3회 재시도 로직 구현
+```java
+@Component
+public class RetryTemplate {
+    public <T> T execute(Supplier<T> supplier, int maxRetries) {
+        int attempt = 0;
+        while (attempt < maxRetries) {
+            try {
+                return supplier.get();
+            } catch (WebClientResponseException e) {
+                if (e.getStatusCode().is5xxServerError()) {
+                    attempt++;
+                    // 2초, 4초, 8초 간격으로 재시도
+                    long delay = (long) Math.pow(2, attempt) * 1000;
+                    Thread.sleep(delay);
+                } else {
+                    throw e;  // 4xx 에러는 재시도 안함
+                }
+            }
+        }
+        throw new ExternalApiException("최대 재시도 횟수 초과");
+    }
+}
+```
+
+**결과:**
+- 일시적인 API 장애 상황에서도 재시도를 통해 성공 확률을 높임
+- 외부 API 호출 없이 테스트 가능해져 테스트 실행 속도 체감 개선
+
+**배운 점:**
+
+외부 의존성에 대한 **복원력(resilience) 설계**가 얼마나 중요한지 알게 되었습니다.
+
+---
+
+### 4. 테스트 가능한 설계
+
+**문제 상황:**
+
+실제 Lost Ark API를 호출하는 테스트는:
+- 느림 (네트워크 I/O, 평균 1-2초)
+- 불안정 (API 장애 시 테스트 실패)
+- API Key 관리 문제
+
+**해결 방법:**
+
+WireMock을 사용한 Mock 서버 구축
+```java
+@Component
+public class MockLostArkServer {
+    private WireMockServer wireMockServer;
+    
+    public void stubArmory(String characterName, String jsonResponse) {
+        stubFor(get(urlEqualTo("/armories/characters/" + characterName))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(jsonResponse)
+                )
+        );
+    }
+}
+```
+
+**테스트 예시:**
+```java
+@Test
+void 캐릭터_정보_조회_성공() {
+    // given
+    String json = loadTestData("armory-response.json");
+    mockServer.stubArmory("테스트캐릭터", json);
+    
+    // when
+    ArmoryTidyDto result = armoryService.getArmory("테스트캐릭터");
+    
+    // then
+    assertThat(result.getProfile().getName()).isEqualTo("테스트캐릭터");
+}
+```
+
+**결과:**
+- 빠른 테스트 실행 (2초 → 0.05초, **40배 향상**)
+- 테스트 환경에서 외부 API 의존성 제거로 안정적인 테스트 환경 구성
+- 외부 API 의존성 제거
+
+**배운 점:**
+
+테스트 가능한 설계를 **처음부터** 고려하는 것이 중요합니다.
+
+---
+
+## 시작하기
+
+### 필수 요구사항
+
+- Java 17+
+- Maven 3.8+
+- Lost Ark Open API Key ([발급 방법](https://developer-lostark.game.onstove.com/))
+
+### 설치 및 실행
+
+1. **저장소 클론**
+```bash
+git clone https://github.com/youndong-jp/ListArk.git
+cd ListArk
+```
+
+2. **API Key 설정**
+
+`src/main/resources/application.yml` 파일 생성:
+```yaml
+lostark:
+  api:
+    key: YOUR_API_KEY_HERE
+    base-url: https://developer-lostark.game.onstove.com
+```
+
+또는 환경 변수 사용:
+```bash
+export LOSTARK_API_KEY=your_api_key
+```
+
+3. **애플리케이션 실행**
+```bash
+mvn spring-boot:run
+```
+
+4. **API 문서 확인**
+```
+http://localhost:8080/swagger-ui.html
+```
+
+### 빠른 테스트
+```bash
+# 캐릭터 정보 조회
+curl http://localhost:8080/api/characters/캐릭터명/armory
+```
+
+---
+
+## API 문서
+
+### Swagger UI
+
+실행 후 브라우저에서 확인:
+```
+http://localhost:8080/swagger-ui.html
+```
+
+### 주요 엔드포인트
+
+#### 1. 캐릭터 전체 정보 조회
+```http
+GET /api/characters/{characterName}/armory
+```
+
+**Response Example:**
+```json
+{
+  "success": true,
+  "data": {
+    "profile": {
+      "characterName": "홀리나이트",
+      "characterLevel": 60,
+      "itemLevel": "1680.83",
+      "characterClass": "홀리나이트",
+      "serverName": "루페온"
+    },
+    "equipment": [
+      {
+        "slot": "무기",
+        "name": "광휘의 대검",
+        "grade": "고대",
+        "quality": 100
+      }
+    ]
+  }
+}
+```
+
+#### 2. 에러 응답
+```json
+{
+  "success": false,
+  "error": {
+    "code": "CHARACTER_NOT_FOUND",
+    "message": "존재하지 않는 캐릭터입니다.",
+    "status": 404
+  }
+}
+```
+
+---
+
+## 테스트
+
+### 테스트 실행
+```bash
+# 전체 테스트 실행
+mvn test
+
+# 테스트 커버리지 리포트 생성
+mvn test jacoco:report
+
+# 리포트 확인 (Mac)
+open target/site/jacoco/index.html
+
+# 리포트 확인 (Windows)
+start target/site/jacoco/index.html
+```
+
+### 테스트 구조
+```
+src/test/java/
+├── integration/
+│   ├── mapper/
+│   │   ├── equipment/          # 장비 Mapper 테스트
+│   │   ├── avatar/             # 아바타 Mapper 테스트
+│   │   ├── engraving/          # 각인 Mapper 테스트
+│   │   └── arkgrid/            # 아크그리드 Mapper 테스트
+│   └── armory/
+│       └── ArmoryIntegrationTest  # API 통합 테스트
+└── support/
+    ├── BaseIntegrationTest        # 테스트 베이스
+    └── MockLostArkServer          # WireMock 서버
+```
+
+### 테스트 전략
+
+현재는 **데이터 구조가 복잡한 Mapper/Parser 테스트에 집중**하고 있으며,
+Service/Controller 테스트는 기능 확장 이후 보강할 예정입니다.
+
+---
+
+## 향후 계획
+
+### 1. 프론트엔드 개발
+- React 기반 간단한 UI
+- 캐릭터 검색 화면
+- 장비/아바타/각인 정보 시각화
+
+### 2. Docker 기반 배포
+- Dockerfile 작성
+- 환경 변수 기반 설정 분리
+- 로컬/서버 동일 실행 환경 구성
+
+### 3. 기능 확장
+- Notice API 추가 (공지, 이벤트)
+- Auction API 추가 (경매장 정보)
+- 기존 Armory 구조 재사용
+
+### 4. 리팩토링
+- Mapper/Parser 책임 정리
+- 중복 코드 제거
+- 테스트하기 어려운 코드 개선
+
+### 5. 재배포 & 운영
+- Docker 기반 재배포
+- 지인 대상 실제 사용
+- 운영 중 발생하는 이슈 개선
+
+---
+
+## 회고
+
+### 잘한 점
+
+1. **이론에서 멈추지 않고 끝까지 만들어봄**
+    - 단순 CRUD가 아닌, 실제 서비스 API를 다루는 프로젝트 진행
+    - 외부 API 연동 → 데이터 가공 → 응답까지 전체 흐름 경험
+
+2. **복잡한 데이터 가공 문제를 직접 해결**
+    - Lost Ark API의 복잡한 Tooltip 구조를 파싱
+    - Element 타입 기반 파서 설계 경험
+    - 11개 카테고리의 다양한 데이터 구조 처리
+
+3. **테스트를 "나중에라도" 직접 작성해봄**
+    - Mapper/Parser 테스트 작성 (98% 커버리지 달성)
+    - WireMock을 통해 외부 API 의존성 제거 경험
+
+### 아쉬운 점
+
+1. **TDD 방식으로 시작하지 못함**
+    - 설계 없이 "느낌적으로" 코딩해서 구조가 뒤죽박죽
+    - 테스트를 나중에 붙이면서 테스트하기 어려운 코드도 발생
+    - 다음 프로젝트에서는 설계 → 테스트 → 구현 순서로 진행
+
+2. **Service/Controller 테스트 부족**
+    - 핵심 로직 위주로 테스트하다 보니 전체 커버리지는 낮은 편
+    - 통합 테스트 범위를 더 넓힐 필요
+
+3. **문서화를 나중에 정리**
+    - README, 설계 설명을 뒤늦게 작성
+    - 초반부터 기록하면서 개발하는 습관 필요
+
+### 배운 점
+
+1. **외부 API 연동 시 null/장애/실패는 기본 전제**
+    - NullSafe 유틸리티로 방어적 프로그래밍
+    - Retry 로직으로 복원력 확보
+    - WireMock으로 테스트 안정성 확보
+
+2. **"완벽한 설계 후 구현"보다 점진적 개선이 현실적**
+    - 일단 만들고 → 고치고 → 테스트 붙이는 방식도 유효
+    - Profile → Equipment → Avatar 순으로 점진적 확장
+
+3. **테스트는 커버리지 숫자보다 직접 겪어보는 경험이 중요**
+    - Mock, WireMock, JaCoCo를 실제로 사용해보며 체득
+    - 테스트 가능한 설계의 중요성 인지
+
+### 다음 프로젝트에서 시도할 것
+
+- **TDD 엄격히 준수**: 설계 → 테스트 → 구현
+- **Redis 캐싱**: API 응답 캐싱으로 성능 개선
+- **모니터링/로깅**: Prometheus, Grafana, ELK Stack
+- **CI/CD**: GitHub Actions로 자동 배포 파이프라인
+
+---
+
+## 개발자
+
+**Youndong JP**
+- GitHub: [@youndong-jp](https://github.com/youndong-jp)
+
+---
+
+## 프로젝트 정보
+
+본 프로젝트는 학습 및 포트폴리오 목적으로 제작되었습니다.
+
+---
+
+## 출처 및 감사
+
+- **Smilegate RPG** - Lost Ark Open API 제공
+- **로아와** - 레퍼런스 사이트
+
+---
+
+<div align="center">
+
+Made with passion by [Youndong JP](https://github.com/youndong-jp)
+
+</div>
