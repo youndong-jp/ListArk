@@ -153,7 +153,8 @@ Lost Ark API의 복잡한 Raw 데이터를 프론트엔드 친화적인 구조�
 
 ### 전체 흐름
 
-ListArk는 외부 API의 복잡한 Raw 데이터를 프론트엔드에서 바로 사용할 수 있도록 가공하는 구조입니다.
+ListArk는 외부 API의 복잡한 Raw 데이터를  
+프론트엔드에서 바로 사용할 수 있는 형태로 가공하는 구조입니다.
 ```
 Client (React - 예정)
         ↓
@@ -182,6 +183,9 @@ Lost Ark Open API
 
 ---
 ## 기술적 챌린지 (요약)
+
+ListArk는 단순 기능 구현보다  
+**외부 API 불확실성을 어떻게 통제했는지**에 초점을 맞춘 프로젝트입니다.
 
 - HTML이 섞인 Tooltip JSON을 동적으로 파싱해야 하는 문제
 - 외부 API의 null 응답으로 인한 NPE 방어
@@ -228,19 +232,21 @@ mvn spring-boot:run
 
 4. **API 문서 확인**
 ```
-http://localhost:8080/swagger-ui.html
+http://localhost:{port}/swagger-ui.html
 ```
 ---
 
 ## API 문서
-
-- Swagger UI: http://localhost:8080/swagger-ui.html
+Swagger UI: http://localhost:{port}/swagger-ui.html
+(기본 포트는 8080이며, 환경에 따라 달라질 수 있습니다)
 - 상세 엔드포인트 설명은 [API Details](docs/api-detail.md) 참고
-
 
 ---
 
 ## 테스트 (요약)
+
+테스트는 “정상 흐름 보장”보다  
+**실패 가능성이 높은 지점의 신뢰성 확보**에 집중했습니다.
 
 ### 테스트 실행
 ```bash
@@ -358,14 +364,15 @@ mvn test
 - **로아와** - 레퍼런스 사이트
 
 ---
-##  문서
+## 참고 문서
 
-- ***[Architecture](docs/architecture.md)***
-- ***[API Details](docs/api-detail.md)***
-- ***[Testing Strategy](docs/testing.md)***
-
+- 아키텍쳐 설계 : [Architecture](architecture.md)
+- 데이터 흐름 : [Data Flow](data-flow.md)
+- API 명세: [API Details](api-detail.md)
+- 기술적 설계 의도: [Technical Challenges](tech-challenges.md)
+- 테스트 전략 : [Testing Strategy](testing.md)
 <div align="center">
 
-Made with passion by [Youndong JP](https://github.com/youndong-jp)
+Made  by [Youndong JP](https://github.com/youndong-jp)
 
 </div>
