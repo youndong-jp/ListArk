@@ -82,3 +82,10 @@ ArmoryClient
 - Mapper / Parser는 **조합 대상**
 - 외부 API 장애는 **전제 조건**
 - 모든 응답은 **일관된 구조**
+---
+## 4.참고 문서
+
+- 아키텍쳐 설계 : [Architecture](architecture.md)
+- API 명세: [API Details](api-detail.md)
+- 기술적 설계 의도: [Technical Challenges](tech-challenges.md)
+- 테스트 전략 : [Testing Strategy](testing.md)

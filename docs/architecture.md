@@ -52,8 +52,8 @@ HTTP 구현(WebClient, Retry, Error Handling)과
 
 이를 통해 Service는
 
-- **“어떤 데이터를 조합할지”**에만 집중하고
-- **“어떻게 HTTP로 가져오는지”**는 Client 계층에 위임합니다.
+- **“어떤 데이터를 조합할지”** 에만 집중하고
+- **“어떻게 HTTP로 가져오는지”** 는 Client 계층에 위임합니다.
 
 > API Client 계층은 **Raw DTO만 반환**하며  
 > Raw → Tidy 변환은 **Service 내부에서 Mapper를 통해 수행**됩니다.
@@ -113,8 +113,6 @@ WebClientErrorHandler
 ↓
 Domain Exception
 ↓
-Domain Exception
-↓
 ErrorResponse
 ```
 
@@ -168,11 +166,12 @@ ErrorResponse
 - WireMock 기반 테스트 환경 구성
 ---
 
-## 데이터 흐름 문서
+## 4.참고 문서
 
-요청부터 응답까지의 실제 처리 흐름은 아래 문서에 정리되어 있습니다.
-
-**[ListArk Data Flow (Raw → Tidy)](data-flow.md)**
+- 데이터 흐름: [Data Flow](data-flow.md)
+- API 명세: [API Details](api-detail.md)
+- 기술적 설계 의도: [Technical Challenges](tech-challenges.md)
+- 테스트 전략 : [Testing Strategy](testing.md)
 
 
 
