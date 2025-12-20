@@ -55,11 +55,11 @@ GET /api/characters/{characterName}/armory
 - 아바타 (외형 정보)
 - 각인 (활성화된 각인 정보)
 - 스킬 (스킬 빌드 정보)
-- 보석 (보석 정보 )
+- 보석 (보석 정보)
 - 카드 (장착 카드, 세트 효과)
 - 컬렉션 (모험물 현황)
 - 아크 패시브 (아크 패시브 정보)
-- 아크 그리드 (아크 그리드  정보)
+- 아크 그리드 (아크 그리드 정보)
 
 ### 2. Raw → Tidy 데이터 변환
 
@@ -152,9 +152,6 @@ Lost Ark API의 복잡한 Raw 데이터를 프론트엔드 친화적인 구조�
 ## 아키텍처
 
 ### 전체 흐름
-
-ListArk는 외부 API의 복잡한 Raw 데이터를  
-프론트엔드에서 바로 사용할 수 있는 형태로 가공하는 구조입니다.
 ```
 Client (React - 예정)
         ↓
@@ -191,6 +188,12 @@ ListArk는 단순 기능 구현보다
 - 외부 API의 null 응답으로 인한 NPE 방어
 - Reactive 환경에서의 API 재시도 전략 설계
 - WireMock을 활용한 외부 API 의존성 제거 테스트
+
+각 챌린지에 대한 **구체적인 설계 의도와 해결 과정**
+그리고 이를 뒷받침하는 **계층 분리와 책임 설계**는  
+아래 문서에 상세히 정리되어 있습니다.
+
+- [Technical Challenges](docs/tech-challenges.md)
 
 ---
 
@@ -237,9 +240,20 @@ http://localhost:{port}/swagger-ui.html
 ---
 
 ## API 문서
-Swagger UI: http://localhost:{port}/swagger-ui.html
-(기본 포트는 8080이며, 환경에 따라 달라질 수 있습니다)
-- 상세 엔드포인트 설명은 [API Details](docs/api-detail.md) 참고
+
+본 프로젝트의 모든 API는 **Swagger UI**를 통해 자동 문서화되어 있습니다.  
+브라우저에서 엔드포인트 목록, 요청/응답 구조를 확인하고 직접 테스트할 수 있습니다.
+
+Swagger UI: http://localhost:{port}/swagger-ui.html  
+(기본 포트는 8080이며, 실행 환경에 따라 달라질 수 있습니다)
+
+![Swagger UI Screenshot](docs/images/swagger-ui.png)
+
+- 공통 응답 포맷(`ApiResponse<T>`) 제공
+- 에러 코드 및 실패 응답 예시 포함
+- `/armory/{characterName}/armory` 엔드포인트 중심으로 설계
+
+자세한 엔드포인트 설명은 [API Details](docs/api-detail.md)를 참고해주세요.
 
 ---
 
@@ -366,11 +380,11 @@ mvn test
 ---
 ## 참고 문서
 
-- 아키텍쳐 설계 : [Architecture](architecture.md)
-- 데이터 흐름 : [Data Flow](data-flow.md)
-- API 명세: [API Details](api-detail.md)
-- 기술적 설계 의도: [Technical Challenges](tech-challenges.md)
-- 테스트 전략 : [Testing Strategy](testing.md)
+- 아키텍쳐 설계 : [Architecture](docs/architecture.md)
+- 데이터 흐름 : [Data Flow](docs/data-flow.md)
+- API 명세: [API Details](docs/api-detail.md)
+- 기술적 설계 의도: [Technical Challenges](docs/tech-challenges.md)
+- 테스트 전략 : [Testing Strategy](docs/testing.md)
 <div align="center">
 
 Made  by [Youndong JP](https://github.com/youndong-jp)
