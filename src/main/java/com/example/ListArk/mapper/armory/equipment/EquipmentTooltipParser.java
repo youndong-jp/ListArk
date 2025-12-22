@@ -193,8 +193,9 @@ public class EquipmentTooltipParser {
         // 효과 내용 (Element_001)
         if (value.has("Element_001")) {
             String content = value.get("Element_001").asText();
-            // <BR> 태그를 줄바꿈으로 변환 후 HTML 태그 제거
-            data.setContent(stripHtmlTags(content.replace("<BR>", "\n")));
+            // 모든 <br>, <BR>, <br/> 를 줄바꿈으로 변환
+            String withLineBreaks = content.replaceAll("(?i)<br\\s*/?>", "\n");
+            data.setContent(stripHtmlTags(withLineBreaks));
         }
 
         dto.getEffectList().add(data);
