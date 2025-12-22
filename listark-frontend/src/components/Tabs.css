@@ -1,0 +1,30 @@
+.tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tabs-list {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.tab-button {
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-button.is-active {
+  border-bottom-color: #0070f3;
+  font-weight: 600;
+  color: #0070f3;
+}
+
+.tab-panel {
+  padding: 8px 0;
+}
+
