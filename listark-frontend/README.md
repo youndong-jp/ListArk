@@ -1,16 +1,81 @@
-# React + Vite
+## Versioning Strategy
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ListArk의 프론트엔드는  
+**단발성 완성 프로젝트가 아니라, 학습 → 포트폴리오 → 서비스 운영까지 단계적으로 발전하는 구조**를 목표로 합니다.
 
-Currently, two official plugins are available:
+각 버전은 “완성도 등급”이 아니라  
+**학습 목적과 역할에 따른 명확한 단계 구분**을 의미합니다.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## v1 – Learning & API Validation
 
-## React Compiler
+v1은 **React 및 프론트엔드 기본 흐름을 학습하기 위한 초기 단계**입니다.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 목적
+- React 기본 개념 학습 (컴포넌트, state, effect)
+- 라우팅과 API 호출 흐름 이해
+- 백엔드 Tidy API 구조 검증
 
-## Expanding the ESLint configuration
+### 특징
+- UI/UX보다는 **데이터 흐름과 구조 확인**에 집중
+- Armory 통합 API 호출 후 JSON 그대로 출력
+- 최소한의 화면과 로직만 구현
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+> v1은 “보여주기 위한 화면”이 아니라  
+> **백엔드 API가 프론트엔드에서 바로 사용 가능한지 검증하기 위한 학습 단계**입니다.
+
+## v2 – Portfolio Version
+
+v2는 **포트폴리오 제출을 목표로 한 첫 번째 완성 단계**입니다.
+
+### 목표
+- 프론트엔드 기본 역량을 보여줄 수 있는 구조
+- 실제 사용자 관점에서 이해 가능한 UI 제공
+- 첫 배포를 고려한 안정적인 버전
+
+### 예정 사항
+- Armory 데이터 섹션별 UI 분리
+    - Profile
+    - Equipment
+    - Avatar
+    - Engraving 등
+- JSON Viewer → 카드/섹션 기반 UI 전환
+- 로딩 / 에러 상태 처리 개선
+- 최소한의 스타일링 적용
+
+v2부터는 **데모 링크를 포함한 배포 버전**으로 활용할 계획입니다.
+
+## v3 – Service-ready Version
+
+v3는 **실제 서비스 운영을 고려한 단계**입니다.
+
+### 목표
+- 성능 및 운영 관점 개선
+- 사용자 경험 중심의 설계
+
+### 고려 사항
+- API 호출 최적화 및 캐싱 전략
+- 데이터 로딩 성능 개선
+- 에러 모니터링 및 로깅
+- 서비스 확장성을 고려한 구조 개선
+
+v3는 포트폴리오 필수 요건은 아니지만,  
+**실제 운영 경험을 쌓기 위한 확장 단계**로 계획하고 있습니다.
+
+## Why This Approach
+
+이 프로젝트는  
+“처음부터 완벽한 결과물을 만드는 것”보다  
+**학습 과정과 점진적인 개선을 명확히 기록하는 것**을 더 중요하게 생각합니다.
+
+- v1: 학습과 검증
+- v2: 포트폴리오
+- v3: 운영 경험
+
+하나의 프로젝트를 통해  
+**개발자의 성장 과정과 사고 흐름을 함께 보여주는 것**이 ListArk 프론트엔드의 목표입니다.
+
+## Current Status
+
+- ✅ v1: Learning & API Validation 완료
+- ⏳ v2: Portfolio Version 진행 예정
+- ⏳ v3: Service-ready Version 장기 계획
