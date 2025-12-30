@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import ProfileSection from "../components/profile/ProfileSection";
+import EquipmentSection from "../components/equipment/EquipmentSection";
 
 function ArmoryPage() {
   const { name } = useParams();
@@ -23,6 +25,7 @@ function ArmoryPage() {
         }
 
         const json = await res.json();
+
         setData(json.data);
       } catch (err) {
         setError(err.message);
@@ -41,7 +44,10 @@ function ArmoryPage() {
     <div>
       <h2>Armory Result</h2>
       <p>Character: {name}</p>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+
+      <ProfileSection profile={data.profile} />
+      <EquipmentSection equipment={data.equipment} />
+
     </div>
   );
 }
